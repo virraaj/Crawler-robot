@@ -34,7 +34,8 @@ Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State1,State2, Stete3
 
 def qLearning(Q, reward):
     a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
-    size = np.shape(Q)  # reading size of the given Q matrix
+    # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
+    size = np.shape(Q)
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
     while qError(Q, Qlast) > 10**-3 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
@@ -59,46 +60,62 @@ def qLearning(Q, reward):
         # for column1(state 2,6,10) % 4 (total columns) will be 2 [i.e colum = 2-1 = 1]
         temp = state % size[1]
         col = temp - 1
-        # action selection according to selction of state
-        if raw == 0 and col == 0:
-            action = random.choice([1, 3])
-        elif raw == 0 and col == -1:
-            action = random.choice([1, 2])
-        elif raw == 0:
-            action = random.choice([1, 2, 3])
-
-        elif raw == size[0]-1 and col == 0:
-            action = random.choice([0, 3])
-        elif raw == size[0]-1 and col == -1:
-            action = random.choice([0, 2])
-        elif raw == size[0]-1:
-            action = random.choice([0, 2, 3])
-
-        elif col == 0:
-            action = random.choice([0, 1, 3])
-        elif col == -1:
-            action = random.choice([0, 1, 2])
-
+        if col < 0:
+            col = size[1] - 1
         else:
-            action = random.randint(0, 3)
-
-        # defining next state according to choosen action
-        if action == 0:  # Up movement
-            nextstate = Q[raw-1][col]
-        elif action == 1:  # Down movememt
-            nextstate = Q[raw+1][col]
-        elif action == 2:  # Left movement
-            nextstate = Q[raw][col-1]
-        else:  # Right movement
-            nextstate = Q[raw][col+1]
+            pass
         # ipdb.set_trace()
-        # try executing the Q-iteration formula with no errors..
-        try:
-            Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))
-        # tracking if there is a type error or not in above equation
-        except TypeError as e:
-            print("TypeError")
+        for i in range(0, 20):
+            # action selection according to selction of state
+            if raw == 0 and col == 0:
+                action = random.choice([1, 3])
+            elif raw == 0 and (col == -1 or col == size[1]-1):
+                action = random.choice([1, 2])
+            elif raw == 0:
+                action = random.choice([1, 2, 3])
+
+            elif raw == size[0]-1 and col == 0:
+                action = random.choice([0, 3])
+            elif raw == size[0]-1 and (col == -1 or col == size[1]-1):
+                action = random.choice([0, 2])
+            elif raw == size[0]-1:
+                action = random.choice([0, 2, 3])
+
+            elif col == 0:
+                action = random.choice([0, 1, 3])
+            elif (col == -1 or col == size[1]-1):
+                action = random.choice([0, 1, 2])
+
+            else:
+                action = random.randint(0, 3)
+
+            # defining nextstate according to choosen action
+            if action == 0:  # Up movement
+                nextstate = Q[raw-1][col]
+                rawtemp = raw - 1
+                coltemp = col
+            elif action == 1:  # Down movememt
+                nextstate = Q[raw+1][col]
+                rawtemp = raw + 1
+                coltemp = col
+            elif action == 2:  # Left movement
+                nextstate = Q[raw][col-1]
+                rawtemp = raw
+                coltemp = col - 1
+            else:  # Right movement
+                # ipdb.set_trace()
+                nextstate = Q[raw][col+1]
+                rawtemp = raw
+                coltemp = col + 1
             # ipdb.set_trace()
+            # try executing the Q-iteration formula with no errors..
+            try:
+                Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))
+            # tracking if there is a type error or not in above equation
+            except TypeError as e:
+                print("TypeError")
+            raw = rawtemp
+            col = coltemp
     # getting the appropriate action back from the given calculated values of Q matrix
     for r in range(0, size[0]):
         for c in range(0, size[1]):
