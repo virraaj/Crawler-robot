@@ -25,6 +25,6 @@ def generateDummy(v1):
 #       [[10, 110, 10, 1110], [10, 110, 10, 1110], [10, 110, 10, 1110]],
 #       [[10, 110, 10, 1110], [10, 110, 10, 1110], [10, 110, 10, 1110]]]
 # v2 = [[0, 0, 0, 0], [0, 0, 0, 0]]
-# print(generateDummy(v1))
+# print(generateDummy(v2))
 # print ("\n")
-# print(np.shape(v1), np.shape(generateDummy(v1)))
+# print(np.shape(v2), np.shape(generateDummy(v2)))
