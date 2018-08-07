@@ -1,3 +1,8 @@
+'''!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************
+THIS VERSION IS OBSOLATE. DO NOT USE THIS VERSION.!!!! USE Q-learning_V2.0.py FOR CORRECT RESULTS.
+*******************************************************************************
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'''
 # Implementation  of Q-learning
 # again for 3x3 matrix is the starting point
 import numpy as np
