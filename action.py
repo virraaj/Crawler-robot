@@ -25,7 +25,7 @@ def action(a,s1,s2):
     positions = []
     for i in frange(5.0,3.0,(5-3.0)/(n-1)):
         positions.append(round(i,2))
-	
+
     up = positions   # down to up
     #a1 = round(a1,2)
     print "up=",up
@@ -57,24 +57,23 @@ def action(a,s1,s2):
         time.sleep(0.5)
     elif a ==1 and s1 >= max(down):
         print"DOWN motion not allowed"
-    elif a == 2 and s2 > min(right): #Right
-        p1.start(2.5)
-	c = right.index(s2)
-        d = right[c+1]
-        p1.ChangeDutyCycle(d)
-        time.sleep(0.5)
-    elif a ==2 and s2 <= min(right):
-        print"Right motion not allowed"
-    elif a == 3 and s2 < max(left): #left
+    elif a == 2 and s2 < max(left): #left
         p1.start(2.5)
 	c = left.index(s2)
         d = left[c+1]
         p1.ChangeDutyCycle(d)
         time.sleep(0.5)
-    elif a ==3 and  s2 >= max(left):
+    elif a ==2 and  s2 >= max(left):
         print"Left motion not allowed"
-        
+    elif a == 3 and s2 > min(right): #Right
+        p1.start(2.5)
+	c = right.index(s2)
+        d = right[c+1]
+        p1.ChangeDutyCycle(d)
+        time.sleep(0.5)
+    elif a ==3 and s2 <= min(right):
+        print"Right motion not allowed"
 
 
-action(3,5.0,10.0) 
 
+action(3,5.0,10.0)
