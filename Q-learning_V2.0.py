@@ -35,7 +35,7 @@ Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State1,State2, Stete3
 def qLearning(Q, reward):
     a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
     # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
-    size = np.shape(Q)
+    size = np.shape(Q)  # storing size of Q-matrix
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
     while qError(Q, Qlast) > 10**-3 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
@@ -50,7 +50,7 @@ def qLearning(Q, reward):
         # for 3x4 (raw x column) state 1 to 4 are raw in 1 and state 5 to 8 are raw in 2
         # for raw1(state 1 to 4)/4 (total columns) will be 0 < temp <= 1
         # for raw1(state 5 to 8)/4 (total columns) will be 1 < temp <= 2
-        temp = state / (size[1] * 1.0)
+        temp = state / (size[1] * 1.0)  # defining a temporary variable
         if ((temp).is_integer()):
             raw = int(temp) - 1
         else:
@@ -87,35 +87,41 @@ def qLearning(Q, reward):
                 action = random.choice([0, 1, 2])
 
             else:
-                action = random.randint(0, 3)
+                action = random.randint(0, 3)  # cells where all four actions are possible
 
             # defining nextstate according to choosen action
             if action == 0:  # Up movement
                 nextstate = Q[raw-1][col]
-                rawtemp = raw - 1
-                coltemp = col
+                rawtemp = raw - 1  # raw of nextstep
+                coltemp = col  # col of nextstep
             elif action == 1:  # Down movememt
                 nextstate = Q[raw+1][col]
-                rawtemp = raw + 1
-                coltemp = col
+                rawtemp = raw + 1  # raw of nextstep
+                coltemp = col  # col of nextstep
             elif action == 2:  # Left movement
                 nextstate = Q[raw][col-1]
-                rawtemp = raw
-                coltemp = col - 1
+                rawtemp = raw  # raw of nextstep
+                coltemp = col - 1  # col of nextstep
             else:  # Right movement
                 # ipdb.set_trace()
                 nextstate = Q[raw][col+1]
-                rawtemp = raw
-                coltemp = col + 1
+                rawtemp = raw  # raw of nextstep
+                coltemp = col + 1  # col of nextstep
             # ipdb.set_trace()
             # try executing the Q-iteration formula with no errors..
+            '''
+            _____ADD HERE____
+            ACTION_PERFORMANCE FUNCTION
+            UPDATE_REWARD FUNCTION
+            '''
             try:
                 Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))
-            # tracking if there is a type error or not in above equation
+            # tracking if there is a type error (i.e. datatype missmatch) or not in above equation
             except TypeError as e:
                 print("TypeError")
             raw = rawtemp
             col = coltemp
+
     # getting the appropriate action back from the given calculated values of Q matrix
     for r in range(0, size[0]):
         for c in range(0, size[1]):
