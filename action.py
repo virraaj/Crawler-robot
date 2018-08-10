@@ -56,12 +56,29 @@ def playAction(a, s1, s2):
         time.sleep(0.5)
     elif a == 1 and s1 >= max(down):
         print"DOWN motion not allowed"
+<<<<<<< HEAD
+    elif a == 2 and s2 < max(left):  # left
+        p1.start(2.5)
+        c = left.index(s2)
+        d = left[c+1]
+        p1.ChangeDutyCycle(d)
+        time.sleep(0.5)
+    elif a == 2 and s2 >= max(left):
+        print"Left motion not allowed"
+    elif a == 3 and s2 > min(right):  # Right
+=======
     elif a == 2 and s2 > min(right):  # Right
+>>>>>>> 93de3c86483e3920b69fa021ad41c8736787a7a3
         p1.start(2.5)
         c = right.index(s2)
         d = right[c+1]
         p1.ChangeDutyCycle(d)
         time.sleep(0.5)
+<<<<<<< HEAD
+    elif a == 3 and s2 <= min(right):
+        print"Right motion not allowed"
+
+=======
     elif a == 2 and s2 <= min(right):
         print"Right motion not allowed"
     elif a == 3 and s2 < max(left):  # left
@@ -72,6 +89,7 @@ def playAction(a, s1, s2):
         time.sleep(0.5)
     elif a == 3 and s2 >= max(left):
         print"Left motion not allowed"
+>>>>>>> 93de3c86483e3920b69fa021ad41c8736787a7a3
 
 
 action(3, 5.0, 10.0)
