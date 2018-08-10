@@ -10,7 +10,7 @@ def frange(start, end, step):
         tmp -= step
 
 
-def action(a, s1, s2):
+def playAction(a, s1, s2):
     servoPIN = 17
     servoPIN1 = 4
     GPIO.setmode(GPIO.BCM)

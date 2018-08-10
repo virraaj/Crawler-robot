@@ -1,3 +1,3 @@
-def update_reward(reward, raw, col, action, value):
-    reward[raw][col][action] = value
+def update_reward(reward, raw, col, action, diff):
+    reward[raw][col][action] = diff
     return reward
