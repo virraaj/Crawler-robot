@@ -1,3 +1,4 @@
+
 def pinSetup():
     # motor setup
     import RPi.GPIO as GPIO
@@ -11,8 +12,8 @@ def pinSetup():
     p.start(2.5)
     p1.start(2.5)
     # encoder setup
-    import ky040.KY040
-    encoder = ky040
+    import KY040.ky040.KY040 as ky
+    encoder = ky.KY040
     ENClast = 0
 
     # return
