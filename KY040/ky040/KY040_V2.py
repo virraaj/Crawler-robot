@@ -71,6 +71,10 @@ class KY040:
             self.switchCallback()
 
 
+'''
+************************************************
+trying to call the class from pinSetup
+************************************************
 if __name__ == "__main__":
 
     CLOCKPIN = 20
@@ -100,3 +104,4 @@ if __name__ == "__main__":
     finally:
         ky040.stop()
         GPIO.cleanup()
+'''
