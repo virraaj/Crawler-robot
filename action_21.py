@@ -1,8 +1,8 @@
 # import RPi.GPIO as GPIO
-import time
+# import time
 import pinSetup
-import gotopos
-#import ipdb
+
+
 def frange(start, end, n):
     # step = round(step,3)
     tmp = start
@@ -21,7 +21,7 @@ def playAction(a, s1, s2, n):
 *****************************************************************************
     '''
     positions = []  # positions of motor 1
-    for i in frange(3.0, 5.0, n):
+    for i in frange(5.0, 3.0, n):
         positions.append(round(i, 2))
 
     motor1_range = positions   # down to up
@@ -29,45 +29,46 @@ def playAction(a, s1, s2, n):
     print "1st_Motor_Range", motor1_range
 
     positions1 = []  # positions motor2
-    for j in frange(3.0, 10.0, n):
+    for j in frange(10.0, 3.0, n):
         positions1.append(round(j, 2))
     motor2_range = positions1  # towards Right
     print "2nd_Mtor_Range=", motor2_range
 
     if a == 0 and s1 > 0:  # up
+        # p.start(2.5)  # Initialising up down motor
         d = motor1_range[s1-1]
         print "d=", d
         p.ChangeDutyCycle(d)
-        time.sleep(2.0)
+    #    time.sleep(0.5)
     elif a == 0 and s1 <= 0:
         print"UP motion not allowed"
     elif a == 1 and s1 < n-1:  # down
+        #    p.start(2.5)
         d = motor1_range[s1+1]
         print "d=", d
         p.ChangeDutyCycle(d)
-        time.sleep(0.5)
+    #    time.sleep(0.5)
     elif a == 1 and s1 >= n-1:
         print"DOWN motion not allowed"
     elif a == 2 and s2 > 0:  # Left
+        # p1.start(2.5)
         d = motor2_range[s2-1]
         p1.ChangeDutyCycle(d)
-        time.sleep(0.5)
+        # time.sleep(0.5)
     elif a == 2 and s2 <= 0:
         print"Left motion not allowed"
     elif a == 3 and s2 < n-1:  # Right
+        # p1.start(2.5)
         d = motor2_range[s2+1]
         p1.ChangeDutyCycle(d)
-        time.sleep(0.5)
+        # time.sleep(0.5)
     elif a == 3 and s2 >= n-1:
         print"Right motion not allowed"
 
-pinVar = pinSetup.pinSetup()
-p = pinVar[0]
-p1 = pinVar[1]
-encoder = pinVar[2]
-ENClast = pinVar[3]
-p.start(4.0)
-p1.start(6.5)
-gotopos.gotopos(2,2,p,p1)
-time.sleep(2.0)
-playAction(0, 2, 2, 5)
+
+pinVar = pinSetup()
+p = pinVar(0)
+p1 = pinVar(1)
+encoder = pinVar(2)
+ENClast = pinVar(3)
+playAction(3, 5.0, 10.0, 4)
