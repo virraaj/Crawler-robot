@@ -2,6 +2,17 @@
 import pinSetup
 import time
 def gotopos(s, s1, p, p1):
+    '''
+    servoPIN = 17
+    servoPIN1 = 4
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(servoPIN, GPIO.OUT)
+    GPIO.setup(servoPIN1, GPIO.OUT)
+    p = GPIO.PWM(servoPIN, 50) # GPIO 17 als PWM mit 50Hz
+    p1 = GPIO.PWM(servoPIN1, 50)
+    #p.start(2.5)
+    #p1.start(2.5)
+    '''
     def frange(start, end, n):
         # step = round(step,3)
         tmp = start

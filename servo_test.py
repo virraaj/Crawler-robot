@@ -34,8 +34,10 @@ def fwd(t): # positions programmed to move crawler forward
         for j in frange(10.0,3.0,n):
             p.ChangeDutyCycle(i)
             time.sleep(t)
+	    #encoder()
             p1.ChangeDutyCycle(j)
             time.sleep(t)
+            #encoder()
 
     '''p.ChangeDutyCycle(5.0) #This are the positions programmed
     time.sleep(t)
@@ -55,12 +57,49 @@ def rev(t):   # Crawler programmed to reverse by this function
     #time.sleep(t)
     motor2(0.5)
 
-try:
-  while True:
-    #rev(0.5)
-    fwd(0.5)
+import KY040.ky040.KY040_V2 as ky
+from time import sleep
+    #if __name__ == "__main__":
 
-except KeyboardInterrupt:
-  p.stop()
-  p1.stop()
+CLOCKPIN = 20
+DATAPIN = 26
+SWITCHPIN = 2
+    #i = 0
+
+def rotaryChange(direction):
+        #  global i
+        #    print i
+        # i=i+1
+
+        # print "turned - " + str(direction)
+        # def switchPressed():
+        #    print "button pressed"
+    pass
+
+GPIO.setmode(GPIO.BCM)
+
+encoder = ky.KY040(CLOCKPIN, DATAPIN, SWITCHPIN, rotaryChange)
+
+encoder.start()
+
+try:
+    while True:
+        fwd(0.25)
+        sleep(0.01)
+finally:
+    encoder.stop()
+    GPIO.cleanup()
+    p.stop()
+    p1.stop()
+# encoder = ky.KY040
+ENClast = 0
+#try:
+ # while True:
+    #rev(0.5)
+  #  fwd(0.25)
+    
+
+#except KeyboardInterrupt:
+ # p.stop()
+ # p1.stop()
 GPIO.cleanup()

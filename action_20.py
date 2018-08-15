@@ -12,7 +12,7 @@ def frange(start, end, n):
         tmp += step
 
 
-def playAction(a, s1, s2, n):
+def playAction(a, s1, s2, n, p, p1):
     '''
 ****************************************************************************
     values of a can be from [0,1,2,3]=[up,down,left,right]
@@ -60,7 +60,10 @@ def playAction(a, s1, s2, n):
         time.sleep(0.5)
     elif a == 3 and s2 >= n-1:
         print"Right motion not allowed"
-
+'''
+******************************************************************************
+just for a temporary testing following code
+******************************************************************************
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
@@ -70,4 +73,5 @@ p.start(4.0)
 p1.start(6.5)
 gotopos.gotopos(2,2,p,p1)
 time.sleep(2.0)
-playAction(0, 2, 2, 5)
+playAction(3, 2, 2, 5)
+'''
