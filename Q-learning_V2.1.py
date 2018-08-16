@@ -1,7 +1,8 @@
 # Implementation  of Q-learning
 # again for 3x3 matrix is the starting point
+# version 2.1 is to combine Q-learning  with hardware
 import numpy as np
-import ipdb
+# import ipdb
 from Error import qError
 import random
 from Dummy import generateDummy

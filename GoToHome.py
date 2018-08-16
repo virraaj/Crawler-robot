@@ -1,3 +1,3 @@
 def GoToHome(p, p1):
-    p.ChangeDutyCycle(d)
-    p1.ChangeDutyCycle(d)
+    p.ChangeDutyCycle(3.0)
+    p1.ChangeDutyCycle(3.0)
