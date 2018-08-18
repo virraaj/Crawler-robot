@@ -11,9 +11,13 @@ import pinSetup
 import update_reward
 import GoToHome
 import action_20
+import generate_rewardmatrix
+import gotopos
 gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
+
+'''
 reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
            {0: None, 1: 0, 2: 0, 3: 0},  # State = 2
            {0: None, 1: 0, 2: 0, 3: None}],  # State = 3
@@ -23,34 +27,43 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
           [{0: 0, 1: None, 2: None, 3: -1},  # State = 7
            {0: 0, 1: None, 2: 1, 3: -1},  # State = 8
            {0: 0, 1: None, 2: 1, 3: None}]]  # State = 9
+'''
+
 # Here Q function is also function of state and actions
 # Q is definded as matrix of 9 members.. every member is a state..
 # containing Q values for all four possible actions
+
 Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State1,State2, Stete3
      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State4, State5, State6
      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]  # State7, State8, State9
+
 # Every time we do down action from a state we will be in new state which is 3
 # member after it. (i.e. from state1 to state4) [This is valid only for 3x3]
 # Every time we do up action from a state we will be in new state which is 3
 # member before it. (i.e. from state4 to state1) [This is valid only for 3x3]
 # Every Right action will take us to state which is 1 member after it. [not valid for state3, state6, state9]
 # Every Left action will take us to state which is 1 member before it. [not valid for state1, state4, state7]
+
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
 ENClast = pinVar[3]
+p.ChangeDutyCycle(3.0)
+p1.ChangeDutyCycle(3.0)
 GoToHome.GoToHome(p, p1)
-motorStep1 = 3.0
-motorStep2 = 3.0
+
+# motorStep1 = 3.0
+# motorStep2 = 3.0
 
 
-def qLearning(Q, reward):
+def qLearning(Q, p, p1, encoder, ENClast):
     a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
     # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
     size = np.shape(Q)  # storing size of Q-matrix
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
+    reward = generate_rewardmatrix.generate_rewardmatrix(n)
     while qError(Q, Qlast) > 10**-3 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
         # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
         # and this will cause us to fall out of the loop
@@ -77,6 +90,7 @@ def qLearning(Q, reward):
             col = size[1] - 1
         else:
             pass
+        gotopos.gotopos(raw, col, p, p1)  # to go to state that is selected randomly
         # ipdb.set_trace()
         for i in range(0, 20):
             # action selection according to selction of state
@@ -127,10 +141,13 @@ def qLearning(Q, reward):
             ACTION_PERFORMANCE FUNCTION
             UPDATE_REWARD FUNCTION
             '''
-            action_20.playAction(action, motorStep1, motorStep2)
+            ENClast = encoder.getData()
+            action_20.playAction(action, raw, col, size[0], p, p1)
+            time.sleep(0.1)
             ENC = encoder.getData()
             diff = ENC - ENClast
-            update_reward.update_reward(reward, raw, col, action, diff)
+            reward[raw][col][action] = diff
+            # update_reward.update_reward(reward, raw, col, action, diff)
 
             try:
                 Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))

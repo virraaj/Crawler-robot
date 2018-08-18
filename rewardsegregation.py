@@ -1,5 +1,10 @@
+#import ipdb
 import GoToHome
 import generate_rewardmatrix
+import pinSetup
+import gotopos
+import action_20
+import time
 ## 0 = up / 1 = down / 2 = left / 3= right
 def action_select(raw,col,n):
     # action selection according to selction of state
@@ -33,15 +38,25 @@ def action_select(raw,col,n):
 
 def rewardsegregation(n,p,p1,encoder,ENClast):
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
-    for row in range(0,n-1):
-        for col in range(0,n-1):
-            for action in action_select(row,col,n):
-                gotopos(row,col,p,p1)
-                ENClast= encoder.setData(0)
-                action_20.playAction(action,row,col,n,p,p1)
-                time.sleep(0.25)
+    for raw in range(0,n):
+        for col in range(0,n):
+            for action in action_select(raw,col,n):
+#                ipdb.set_trace()
+                gotopos.gotopos(raw,col,p,p1)
+#		ipdb.set_trace()                
+                ENClast= encoder.getData()
+#		ipdb.set_trace()
+                action_20.playAction(action,raw,col,n,p,p1)
+#                time.sleep(0.1)
+#		ipdb.set_trace()
                 ENC = encoder.getData()
-                reward[row][col][action] = ENC - ENClast
+#		ipdb.set_trace()
+                reward[raw][col][action] = ENC - ENClast
+#		print "raw",raw
+#		print "col",col
+#		print "action",action
+#		print "ENC final data", ENC-ENClast
+ #               ipdb.set_trace()
     return reward
     # generate_rewardmatrix(n)
     # GoToHome(p,p1)
@@ -61,3 +76,25 @@ def rewardsegregation(n,p,p1,encoder,ENClast):
     # rewardseg(3,0,0)
     # rewardseg(3,0,1)
     # rewardseg(2,0,2)
+
+pinVar = pinSetup.pinSetup()
+p = pinVar[0]
+p1 = pinVar[1]
+encoder = pinVar[2]
+ENClast = pinVar[3]
+p.start(4.0)
+p1.start(6.5)
+encoder.setData(0)
+#GoToHome.GoToHome(p, p1)
+#time.sleep(0.25)
+#gotopos.gotopos(0,0,p,p1)
+#gotopos.gotopos(1,0,p,p1)
+#gotopos.gotopos(2,0,p,p1)
+#time.sleep(0.25)
+#action_20.playAction(0,1,0,3,p,p1)
+#time.sleep(0.25)
+reward = rewardsegregation(3, p, p1, encoder, ENClast)
+print reward[0]
+print reward[1]
+print reward[2]
+

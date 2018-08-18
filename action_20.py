@@ -1,8 +1,10 @@
 # import RPi.GPIO as GPIO
 import time
-import pinSetup
-import gotopos
-#import ipdb
+# import pinSetup
+# import gotopos
+# import ipdb
+
+
 def frange(start, end, n):
     # step = round(step,3)
     tmp = start
@@ -12,11 +14,11 @@ def frange(start, end, n):
         tmp += step
 
 
-def playAction(a, s1, s2, n, p, p1):
+def playAction(action, raw, col, n, p, p1):
     '''
 ****************************************************************************
     values of a can be from [0,1,2,3]=[up,down,left,right]
-    s1 and s2 can be from range(0, n-1)
+    raw and col can be from range(0, n-1)
     and n = Nos. of steps we want
 *****************************************************************************
     '''
@@ -28,38 +30,40 @@ def playAction(a, s1, s2, n, p, p1):
     # a1 = round(a1,2)
     print "1st_Motor_Range", motor1_range
 
-    positions1 = []  # positions motor2
+    positionraw = []  # positions motor2
     for j in frange(3.0, 10.0, n):
-        positions1.append(round(j, 2))
-    motor2_range = positions1  # towards Right
+        positionraw.append(round(j, 2))
+    motor2_range = positionraw  # towards Right
     print "2nd_Mtor_Range=", motor2_range
 
-    if a == 0 and s1 > 0:  # up
-        d = motor1_range[s1-1]
+    if action == 0 and raw > 0:  # up
+        d = motor1_range[raw-1]
         print "d=", d
         p.ChangeDutyCycle(d)
         time.sleep(2.0)
-    elif a == 0 and s1 <= 0:
+    elif action == 0 and raw <= 0:
         print"UP motion not allowed"
-    elif a == 1 and s1 < n-1:  # down
-        d = motor1_range[s1+1]
+    elif action == 1 and raw < n-1:  # down
+        d = motor1_range[raw+1]
         print "d=", d
         p.ChangeDutyCycle(d)
         time.sleep(0.5)
-    elif a == 1 and s1 >= n-1:
+    elif action == 1 and raw >= n-1:
         print"DOWN motion not allowed"
-    elif a == 2 and s2 > 0:  # Left
-        d = motor2_range[s2-1]
+    elif action == 2 and col > 0:  # Left
+        d = motor2_range[col-1]
         p1.ChangeDutyCycle(d)
         time.sleep(0.5)
-    elif a == 2 and s2 <= 0:
+    elif action == 2 and col <= 0:
         print"Left motion not allowed"
-    elif a == 3 and s2 < n-1:  # Right
-        d = motor2_range[s2+1]
+    elif action == 3 and col < n-1:  # Right
+        d = motor2_range[col+1]
         p1.ChangeDutyCycle(d)
         time.sleep(0.5)
-    elif a == 3 and s2 >= n-1:
+    elif action == 3 and col >= n-1:
         print"Right motion not allowed"
+
+
 '''
 ******************************************************************************
 just for a temporary testing following code

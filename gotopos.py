@@ -3,7 +3,7 @@ import pinSetup
 import time
 
 
-def gotopos(s, s1, p, p1):
+def gotopos(raw, col, p, p1):
     '''
     servoPIN = 17
     servoPIN1 = 4
@@ -37,13 +37,13 @@ def gotopos(s, s1, p, p1):
     positions1.sort()
 
     print 'lr=', positions1
-    print positions[s]
-    print positions1[s1]
+    print positions[raw]
+    print positions1[col]
     # p.start(2.5)
     # p1.start(2.5)
-    p.ChangeDutyCycle(positions[s])
+    p.ChangeDutyCycle(positions[raw])
     time.sleep(0.5)
-    p1.ChangeDutyCycle(positions1[s1])
+    p1.ChangeDutyCycle(positions1[col])
     time.sleep(0.5)
     # GPIO.cleanup()
 
