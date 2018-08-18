@@ -3,7 +3,7 @@ import pinSetup
 import time
 
 
-def gotopos(raw, col, p, p1):
+def gotopos(raw, col, p, p1, n):
     '''
     servoPIN = 17
     servoPIN1 = 4
@@ -26,8 +26,8 @@ def gotopos(raw, col, p, p1):
 
     positions1 = []
 
-    n = 5
-    for i in frange(5.0, 3.0, n):
+#    n = 5
+    for i in frange(5.0, 2.5, n):
         positions.append(i)
     positions.sort()
 

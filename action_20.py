@@ -23,7 +23,7 @@ def playAction(action, raw, col, n, p, p1):
 *****************************************************************************
     '''
     positions = []  # positions of motor 1
-    for i in frange(3.0, 5.0, n):
+    for i in frange(2.5, 5.0, n):
         positions.append(round(i, 2))
 
     motor1_range = positions   # down to up
@@ -40,26 +40,26 @@ def playAction(action, raw, col, n, p, p1):
         d = motor1_range[raw-1]
         print "d=", d
         p.ChangeDutyCycle(d)
-        time.sleep(2.0)
+        time.sleep(0.1)
     elif action == 0 and raw <= 0:
         print"UP motion not allowed"
     elif action == 1 and raw < n-1:  # down
         d = motor1_range[raw+1]
         print "d=", d
         p.ChangeDutyCycle(d)
-        time.sleep(0.5)
+        time.sleep(0.1)
     elif action == 1 and raw >= n-1:
         print"DOWN motion not allowed"
     elif action == 2 and col > 0:  # Left
         d = motor2_range[col-1]
         p1.ChangeDutyCycle(d)
-        time.sleep(0.5)
+        time.sleep(0.1)
     elif action == 2 and col <= 0:
         print"Left motion not allowed"
     elif action == 3 and col < n-1:  # Right
         d = motor2_range[col+1]
         p1.ChangeDutyCycle(d)
-        time.sleep(0.5)
+        time.sleep(0.1)
     elif action == 3 and col >= n-1:
         print"Right motion not allowed"
 
