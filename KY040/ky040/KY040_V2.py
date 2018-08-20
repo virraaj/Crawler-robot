@@ -60,6 +60,9 @@ class KY040:
                 print 'c=', self.CLOCKWISE
                 self.CLOCKWISE += 1
 
+    def setData(self, value):
+        self.CLOCKWISE = value
+
     def getData(self):
         return self.CLOCKWISE
 
