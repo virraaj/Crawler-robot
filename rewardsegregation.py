@@ -1,4 +1,4 @@
-#import ipdb
+import ipdb
 import GoToHome
 import generate_rewardmatrix
 import pinSetup
@@ -57,6 +57,7 @@ def rewardsegregation(n,p,p1,encoder,ENClast):
 #		print "action",action
 #		print "ENC final data", ENC-ENClast
  #               ipdb.set_trace()
+    ipdb.set_trace()
     return reward
     # generate_rewardmatrix(n)
     # GoToHome(p,p1)

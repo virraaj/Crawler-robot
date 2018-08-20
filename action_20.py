@@ -28,24 +28,24 @@ def playAction(action, raw, col, n, p, p1):
 
     motor1_range = positions   # down to up
     # a1 = round(a1,2)
-    print "1st_Motor_Range", motor1_range
+#    print "1st_Motor_Range", motor1_range
 
     positionraw = []  # positions motor2
     for j in frange(3.0, 10.0, n):
         positionraw.append(round(j, 2))
     motor2_range = positionraw  # towards Right
-    print "2nd_Mtor_Range=", motor2_range
+#    print "2nd_Mtor_Range=", motor2_range
 
     if action == 0 and raw > 0:  # up
         d = motor1_range[raw-1]
-        print "d=", d
+#        print "d=", d
         p.ChangeDutyCycle(d)
         time.sleep(0.1)
     elif action == 0 and raw <= 0:
         print"UP motion not allowed"
     elif action == 1 and raw < n-1:  # down
         d = motor1_range[raw+1]
-        print "d=", d
+#        print "d=", d
         p.ChangeDutyCycle(d)
         time.sleep(0.1)
     elif action == 1 and raw >= n-1:

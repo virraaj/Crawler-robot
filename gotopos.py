@@ -31,14 +31,14 @@ def gotopos(raw, col, p, p1, n):
         positions.append(i)
     positions.sort()
 
-    print 'ud=', positions
+#    print 'ud=', positions
     for j in frange(10.0, 3.0, n):
         positions1.append(j)
     positions1.sort()
 
-    print 'lr=', positions1
-    print positions[raw]
-    print positions1[col]
+#    print 'lr=', positions1
+#    print positions[raw]
+#    print positions1[col]
     # p.start(2.5)
     # p1.start(2.5)
     p.ChangeDutyCycle(positions[raw])

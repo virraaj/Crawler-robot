@@ -7,6 +7,7 @@ from Error import error
 gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
+'''
 reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
            {0: None, 1: 0, 2: 0, 3: 0},  # State = 2
            {0: None, 1: 0, 2: 0, 3: None}],  # State = 3
@@ -16,6 +17,10 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
           [{0: 0, 1: None, 2: None, 3: -1},  # State = 7
            {0: 0, 1: None, 2: 1, 3: -1},  # State = 8
            {0: 0, 1: None, 2: 1, 3: None}]]  # State = 9
+'''
+reward = [{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}]
+         [{0: 0, 1: 1, 2: None, 3: 0}, {0: 0, 1: 1, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}]
+         [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 0, 3: None}]
 v = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]  # initial value vector
 
 
