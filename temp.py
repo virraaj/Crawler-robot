@@ -1,8 +1,8 @@
-import pinSetup_temp
+import pinSetup
 import time
 import gotopos
 import action_20
-pinVar = pinSetup_temp.pinSetup()
+pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
@@ -19,14 +19,21 @@ for x in range(0, 200):
     p1.ChangeDutyCycle(y)
     time.sleep(0.05)
 '''
-gotopos.gotopos(2,2,p,p1, 3)
+gotopos.gotopos(4,4,p,p1, 5)
 time.sleep(0.1)
 ENClast = encoder.getData()
-time.sleep(2.0)
-action_20.playAction(2,2,2,3,p,p1)
+time.sleep(0.0)
+action_20.playAction(2,4,3,5,p,p1)
 time.sleep(0.1)
 ENC = encoder.getData()
 print (ENC - ENClast)
+'''
+while True:
+    action_21.playAction(3,3,1,5,p,p1)
+    time.sleep(0.1)
+    action_21.playAction(2,3,2,5,p,p1)
+    time.sleep(0.1)
+'''
 # gotopos.gotopos(2,2,p,p1, 3)
 # time.sleep(0.1)
 # ENClast = encoder.getData()
