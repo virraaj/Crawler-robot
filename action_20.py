@@ -17,7 +17,7 @@ def frange(start, end, n):
 def playAction(action, raw, col, n, p, p1):
     '''
 ****************************************************************************
-    values of a can be from [0,1,2,3]=[up,down,left,right]
+    values of action can be from [0,1,2,3]=[up,down,left,right]
     raw and col can be from range(0, n-1)
     and n = Nos. of steps we want
 *****************************************************************************
@@ -31,7 +31,7 @@ def playAction(action, raw, col, n, p, p1):
 #    print "1st_Motor_Range", motor1_range
 
     positionraw = []  # positions motor2
-    for j in frange(3.0, 10.0, n):
+    for j in frange(3.0, 8.0, n):
         positionraw.append(round(j, 2))
     motor2_range = positionraw  # towards Right
 #    print "2nd_Mtor_Range=", motor2_range

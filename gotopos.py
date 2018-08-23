@@ -32,7 +32,7 @@ def gotopos(raw, col, p, p1, n):
     positions.sort()
 
 #    print 'ud=', positions
-    for j in frange(10.0, 3.0, n):
+    for j in frange(8.0, 3.0, n):
         positions1.append(j)
     positions1.sort()
 
@@ -56,5 +56,5 @@ encoder = pinVar[2]
 ENClast = pinVar[3]
 p.start(3.0)
 p1.start(3.0)
-gotopos(2,2,p,p1)
+gotopos(2,2,p,p1,3)
 '''
