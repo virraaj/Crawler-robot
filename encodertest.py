@@ -1,8 +1,8 @@
-import pinSetup_TEMPencoder
+import pinSetup
 import time
 import gotopos
 import action_20
-pinVar = pinSetup_TEMPencoder.pinSetup()
+pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
@@ -32,4 +32,3 @@ time.sleep(0.25)
 ENC = encoder.getData()
 print ENC
 time.sleep(2.05)
-
