@@ -21,24 +21,23 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
 reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}],
           [{0: 0, 1: 1, 2: None, 3: 0}, {0: 0, 1: 1, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}],
           [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 0, 3: None}]]
-reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {
-    0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: None}]]
-'''
-reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 1, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {0: 0, 1: -1, 2: 0, 3: 0}, {0: 0, 1: 0,
-                                                                                                                                                                                                                                                                                                                                                                       2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: -1, 2: None, 3: -1}, {0: 1, 1: 1, 2: 1, 3: -1}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: -1, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 1, 1: None, 2: None, 3: -1}, {0: -1, 1: None, 2: 1, 3: -1}, {0: -1, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 0, 3: None}]]
-'''
+reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [
+    {0: 0, 1: 0, 2: None, 3: -1}, {0: 0, 1: 0, 2: 1, 3: -1}, {0: 0, 1: 0, 2: 1, 3: -1}, {0: 0, 1: 0, 2: 1, 3: None}], [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: None}]]
 
-v = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]  # initial value vector
+v = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [
+    0, 0, 0, 0]]  # initial value vector
 
 
 def valueiteration(v, reward):
-    a = [[None, None, None], [None, None, None],  [None, None, None]]
+    a = [[None, None, None, None], [None, None, None, None],  [None, None,
+                                                               None, None], [None, None, None, None]]
     # initializing a dummy last value matrix  to enter Error loop
-    vlast = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+    vlast = [[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     print (error(v, vlast))
     while error(v, vlast) >= 10**(-1):
         vlast = deepcopy(v)  # copying current V in Vlast
         m = np.shape(v)  # size of value matrix
+
         for i in range(0, m[0]):  # Nos. of Raws
             for j in range(0, m[1]):  # Nos. of Columns
                 for k in range(0, 4):  # Nos. of actions
