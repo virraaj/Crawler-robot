@@ -27,7 +27,7 @@ def gotopos(raw, col, p, p1, n):
     positions1 = []
 
 #    n = 5
-    for i in frange(5.0, 2.5, n):
+    for i in frange(5.5, 2.5, n):
         positions.append(i)
     positions.sort()
 
@@ -42,9 +42,8 @@ def gotopos(raw, col, p, p1, n):
     # p.start(2.5)
     # p1.start(2.5)
     p.ChangeDutyCycle(positions[raw])
-    time.sleep(0.5)
     p1.ChangeDutyCycle(positions1[col])
-    time.sleep(0.5)
+    time.sleep(0.1)
     # GPIO.cleanup()
 
 

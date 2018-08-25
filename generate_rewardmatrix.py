@@ -50,4 +50,4 @@ def generate_rewardmatrix(n):
     return reward
 
 
-print(generate_rewardmatrix(4))
+

@@ -1,7 +1,3 @@
-# KY040 Python Class
-# Martin O'Hanlon
-# stuffaboutcode.com
-
 import RPi.GPIO as GPIO
 from time import sleep
 
@@ -51,13 +47,13 @@ class KY040:
             if data == 1:
 
                 self.rotaryCallback(self.ANTICLOCKWISE)
-                print 'ac=', self.CLOCKWISE
+#                print 'ac=', self.CLOCKWISE
                 self.CLOCKWISE -= 1
                 #ac = ac+1
             else:
                 #global c
                 self.rotaryCallback(self.CLOCKWISE)
-                print 'c=', self.CLOCKWISE
+#                print 'c=', self.CLOCKWISE
                 self.CLOCKWISE += 1
 
     def setData(self, value):
@@ -79,35 +75,21 @@ class KY040:
 trying to call the class from pinSetup
 ************************************************
 if __name__ == "__main__":
-<<<<<<< HEAD
-=======
-
->>>>>>> 9a9bf1e605a8626da96edcb1f9c1db353dc427bd
     CLOCKPIN = 20
     DATAPIN = 26
     SWITCHPIN = 2
     #i = 0
-<<<<<<< HEAD
-=======
-
->>>>>>> 9a9bf1e605a8626da96edcb1f9c1db353dc427bd
     def rotaryChange(direction):
         #global i
         #print i
         # i=i+1
-<<<<<<< HEAD
-=======
-
->>>>>>> 9a9bf1e605a8626da96edcb1f9c1db353dc427bd
         #print "turned - " + str(direction)
         # def switchPressed():
         #    print "button pressed"
         pass
-<<<<<<< HEAD
     GPIO.setmode(GPIO.BCM)
     ky040 = KY040(CLOCKPIN, DATAPIN, SWITCHPIN, rotaryChange)
     ky040.start()
-=======
 
     GPIO.setmode(GPIO.BCM)
 
@@ -115,7 +97,6 @@ if __name__ == "__main__":
 
     ky040.start()
 
->>>>>>> 9a9bf1e605a8626da96edcb1f9c1db353dc427bd
     try:
         while True:
             sleep(0.1)
