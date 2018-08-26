@@ -14,6 +14,7 @@ import GoToHome
 import action_20
 import generate_rewardmatrix
 import gotopos
+import initvalact
 gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
@@ -28,7 +29,7 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
           [{0: 0, 1: None, 2: None, 3: -1},  # State = 7
            {0: 0, 1: None, 2: 1, 3: -1},  # State = 8
            {0: 0, 1: None, 2: 1, 3: None}]]  # State = 9
-'''
+
 
 # Here Q function is also function of state and actions
 # Q is definded as matrix of 9 members.. every member is a state..
@@ -37,7 +38,7 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
 Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State1,State2, Stete3
      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State4, State5, State6
      [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]  # State7, State8, State9
-
+'''
 # Every time we do down action from a state we will be in new state which is 3
 # member after it. (i.e. from state1 to state4) [This is valid only for 3x3]
 # Every time we do up action from a state we will be in new state which is 3
@@ -58,8 +59,11 @@ GoToHome.GoToHome(p, p1)
 # motorStep2 = 3.0
 
 
-def qLearning(Q, p, p1, encoder, ENClast):
-    a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
+def qLearning(n, p, p1, encoder, ENClast):
+    v = initvalact.initvalact(n)
+    Q = v[0]
+    a = v[1]
+    # a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
     # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
     size = np.shape(Q)  # storing size of Q-matrix
     n = size[0]
@@ -146,9 +150,10 @@ def qLearning(Q, p, p1, encoder, ENClast):
             ENClast = encoder.getData()
             action_20.playAction(action, raw, col, size[0], p, p1)
             time.sleep(0.1)
+            if action == 0 or action == 1:
+                ENClast = encoder.getData()
             ENC = encoder.getData()
-            diff = ENC - ENClast
-            reward[raw][col][action] = diff
+            reward[raw][col][action] = ENC - ENClast
             # update_reward.update_reward(reward, raw, col, action, diff)
 
             try:
