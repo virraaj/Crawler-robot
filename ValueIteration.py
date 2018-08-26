@@ -4,6 +4,8 @@ import numpy as np
 import ipdb
 from copy import deepcopy
 from Error import error
+from Dummy import generateDummy
+import ipdb
 gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
@@ -17,26 +19,28 @@ reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
           [{0: 0, 1: None, 2: None, 3: -1},  # State = 7
            {0: 0, 1: None, 2: 1, 3: -1},  # State = 8
            {0: 0, 1: None, 2: 1, 3: None}]]  # State = 9
-'''
+
 reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}],
           [{0: 0, 1: 1, 2: None, 3: 0}, {0: 0, 1: 1, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}],
           [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 0, 3: None}]]
 reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {
     0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: None, 2: None, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: None}]]
-'''
+
 reward = [[{0: None, 1: 0, 2: None, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 0, 2: 0, 3: 0}, {0: None, 1: 1, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: 0, 2: None, 3: 0}, {0: 0, 1: -1, 2: 0, 3: 0}, {0: 0, 1: 0,
                                                                                                                                                                                                                                                                                                                                                                        2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 0, 1: -1, 2: None, 3: -1}, {0: 1, 1: 1, 2: 1, 3: -1}, {0: 0, 1: 0, 2: 0, 3: 0}, {0: 0, 1: 0, 2: -1, 3: 0}, {0: 0, 1: 0, 2: 0, 3: None}], [{0: 1, 1: None, 2: None, 3: -1}, {0: -1, 1: None, 2: 1, 3: -1}, {0: -1, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 1, 3: -1}, {0: 0, 1: None, 2: 0, 3: None}]]
 '''
 
-v = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]  # initial value vector
+#v = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]  # initial value vector
 
 
-def valueiteration(v, reward):
-    a = [[None, None, None], [None, None, None],  [None, None, None]]
+def valueiteration(v, reward, a):
+#    a = [[None, None, None], [None, None, None],  [None, None, None]]
     # initializing a dummy last value matrix  to enter Error loop
-    vlast = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+#    vlast = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ipdb.set_trace()
+    vlast = generateDummy(v)
     print (error(v, vlast))
-    while error(v, vlast) >= 10**(-1):
+    while error(v, vlast) >= 10**(-5):
         vlast = deepcopy(v)  # copying current V in Vlast
         m = np.shape(v)  # size of value matrix
         for i in range(0, m[0]):  # Nos. of Raws
@@ -70,11 +74,12 @@ def valueiteration(v, reward):
                     a[i][j] = 3
                 if v[i][j] == None:
                     v[i][j] = 0
-        # ipdb.set_trace()
+    ipdb.set_trace()
     return v, a
 
-
+'''
 trial = valueiteration(v, reward)
 print(trial[0])
 print("\n")
 print(trial[1])
+'''

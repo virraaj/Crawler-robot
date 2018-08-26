@@ -12,11 +12,12 @@ def valueiteratingpolicy(n):
     ENClast = pinVar[3]
     p.start(10.0)
     p1.start(10.0)
-    v[0] = initvalact.initvalact(n)
+    v = initvalact.initvalact(n)
+    value = v[0]
+    action = v[1]
     reward = rewardsegregation.rewardsegregation(n,p,p1,encoder,ENClast)
-
-    test = ValueIteration.valueiteration(v,reward)
-    action = test[1]
+    test = ValueIteration.valueiteration(value,reward,action)
+    policy = test[1]
     raw = 0
     col = 0
     gotopos.gotopos(raw,col,p,p1,n)
@@ -37,3 +38,4 @@ def valueiteratingpolicy(n):
         elif action[raw][col] == 3:
             action_20.playAction(3, raw, col, n, p, p1)
             col = col + 1
+valueiteratingpolicy(4)

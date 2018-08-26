@@ -42,17 +42,16 @@ def rewardsegregation(n,p,p1,encoder,ENClast):
         for col in range(0,n):
             for action in action_select(raw,col,n):
 #                ipdb.set_trace()
-		time.sleep(0.1)
                 gotopos.gotopos(raw,col,p,p1, n)
 #		ipdb.set_trace()                
 		time.sleep(0.5)
                 ENClast= encoder.getData()
-#		ipdb.set_trace()
+#		ipdb.set_traced()
                 action_20.playAction(action,raw,col,n,p,p1)
-                time.sleep(0.05)
+                time.sleep(0.1)
 #		ipdb.set_trace()
-		if action == 0 or action == 1:
-		    ENClast = encoder.getData()
+#		if action == 0 or action == 1:
+#		    ENClast = encoder.getData()
                 ENC = encoder.getData()
 #		ipdb.set_trace()
                 reward[raw][col][action] = ENC - ENClast
@@ -73,6 +72,7 @@ def rewardsegregation(n,p,p1,encoder,ENClast):
     # ENC= encoder.getData()
     # action_20.playAction(a,raw ,col,n,p,p1)
     # time.sleep(0.25)
+
     # ENClast = encoder.getData()
     # generate_rewardmatrix[row][col][action] = ENClast - ENC
     # rewardseg(0,1,0)#action that you want to do and the current row and col positions
@@ -81,7 +81,7 @@ def rewardsegregation(n,p,p1,encoder,ENClast):
     # rewardseg(3,0,0)
     # rewardseg(3,0,1)
     # rewardseg(2,0,2)
-
+'''
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
@@ -103,3 +103,5 @@ print reward
 #print reward[1]
 #print reward[2]
 
+
+'''
