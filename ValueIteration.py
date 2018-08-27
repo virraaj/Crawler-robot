@@ -5,7 +5,7 @@ import ipdb
 from copy import deepcopy
 from Error import error
 from Dummy import generateDummy
-import ipdb
+#import ipdb
 gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
@@ -37,7 +37,7 @@ def valueiteration(v, reward, a):
 #    a = [[None, None, None], [None, None, None],  [None, None, None]]
     # initializing a dummy last value matrix  to enter Error loop
 #    vlast = [[1, 0, 0], [0, 0, 0], [0, 0, 0]]
-    ipdb.set_trace()
+#    ipdb.set_trace()
     vlast = generateDummy(v)
     print (error(v, vlast))
     while error(v, vlast) >= 10**(-5):
@@ -74,7 +74,7 @@ def valueiteration(v, reward, a):
                     a[i][j] = 3
                 if v[i][j] == None:
                     v[i][j] = 0
-    ipdb.set_trace()
+#    ipdb.set_trace()
     return v, a
 
 '''
