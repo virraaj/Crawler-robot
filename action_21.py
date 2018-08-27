@@ -39,31 +39,43 @@ def playAction(action, raw, col, n, p, p1):
     if action == 0 and raw > 0:  # up
         d = motor1_range[raw-1]
 #        print "d=", d
-        p.ChangeDutyCycle(d)
-        time.sleep(0.1)
+        c = motor1_range[raw]
+        m = (motor1_range[raw-1]-motor1_range[raw])/25
+        for x in range(0, 25):
+            d = m*x+c
+                p.ChangeDutyCycle(d)
+                time.sleep(0.015)
     elif action == 0 and raw <= 0:
         print"UP motion not allowed"
     elif action == 1 and raw < n-1:  # down
         d = motor1_range[raw+1]
 #        print "d=", d
-	c = motor1_range[raw]
-	m = (motor1_range[raw+1]-motor1_range[raw])/25
-	for x in range(0,25):
-	    d = m*x+c
+        c = motor1_range[raw]
+        m = (motor1_range[raw+1]-motor1_range[raw])/25
+        for x in range(0, 25):
+            d = m*x+c
             p.ChangeDutyCycle(d)
-            time.sleep(0.05)
+            time.sleep(0.015)
     elif action == 1 and raw >= n-1:
         print"DOWN motion not allowed"
     elif action == 2 and col > 0:  # Left
         d = motor2_range[col-1]
-        p1.ChangeDutyCycle(d)
-        time.sleep(0.1)
+        c = motor1_range[col]
+        m = (motor1_range[col-1]-motor1_range[col])/25
+        for x in range(0, 25):
+            d = m*x+c
+                p1.ChangeDutyCycle(d)
+                time.sleep(0.015)
     elif action == 2 and col <= 0:
         print"Left motion not allowed"
     elif action == 3 and col < n-1:  # Right
         d = motor2_range[col+1]
-        p1.ChangeDutyCycle(d)
-        time.sleep(0.1)
+        c = motor1_range[col]
+        m = (motor1_range[col+1]-motor1_range[col])/25
+        for x in range(0, 25):
+            d = m*x+c
+                p1.ChangeDutyCycle(d)
+                time.sleep(0.015)
     elif action == 3 and col >= n-1:
         print"Right motion not allowed"
 
