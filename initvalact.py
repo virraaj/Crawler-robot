@@ -4,4 +4,4 @@ def initvalact(n):
     action = [[None]*n for i in range(n)]
 
     return value,action
-# print initvalact(4)
+print initvalact(3)
