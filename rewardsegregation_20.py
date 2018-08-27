@@ -47,7 +47,7 @@ def rewardsegregation(n, p, p1, encoder, ENClast):
                     ENClast = encoder.getData()
                 ENC = encoder.getData()
                 reward[raw][col][action] = ENC - ENClast
-		time.sleep(0.05)
+                time.sleep(0.05)
     return reward
 
 
@@ -73,5 +73,3 @@ print reward
 #print reward[1]
 #print reward[2]
 '''
-
-

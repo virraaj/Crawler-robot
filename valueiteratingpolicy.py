@@ -4,7 +4,7 @@ def valueiteratingpolicy(n):
     import action_20
     import gotopos
     import initvalact
-    import rewardsegregation
+    import rewardsegregation_20 as rewardsegregation
     pinVar = pinSetup.pinSetup()
     p = pinVar[0]
     p1 = pinVar[1]
@@ -15,12 +15,12 @@ def valueiteratingpolicy(n):
     v = initvalact.initvalact(n)
     value = v[0]
     action = v[1]
-    reward = rewardsegregation.rewardsegregation(n,p,p1,encoder,ENClast)
-    test = ValueIteration.valueiteration(value,reward,action)
+    reward = rewardsegregation.rewardsegregation(n, p, p1, encoder, ENClast)
+    test = ValueIteration.valueiteration(value, reward, action)
     policy = test[1]
     raw = 0
     col = 0
-    gotopos.gotopos(raw,col,p,p1,n)
+    gotopos.gotopos(raw, col, p, p1, n)
     # 0 = up / 1 = down / 2 = left / 3= right
     while True:
         if action[raw][col] == 0:
@@ -38,4 +38,6 @@ def valueiteratingpolicy(n):
         elif action[raw][col] == 3:
             action_20.playAction(3, raw, col, n, p, p1)
             col = col + 1
+
+
 valueiteratingpolicy(4)
