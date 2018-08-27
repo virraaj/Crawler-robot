@@ -39,7 +39,7 @@ def rewardsegregation(n, p, p1, encoder, ENClast):
         for col in range(0, n):
             for action in action_select(raw, col, n):
                 gotopos.gotopos(raw, col, p, p1, n)
-                time.sleep(0.1)
+                time.sleep(0.3)
                 ENClast = encoder.getData()
                 act.playAction(action, raw, col, n, p, p1)
                 time.sleep(0.1)
@@ -49,7 +49,6 @@ def rewardsegregation(n, p, p1, encoder, ENClast):
                 reward[raw][col][action] = ENC - ENClast
                 time.sleep(0.05)
     return reward
-
 
 '''
 pinVar = pinSetup.pinSetup()
@@ -72,4 +71,5 @@ reward = rewardsegregation(4, p, p1, encoder, ENClast)
 print reward
 #print reward[1]
 #print reward[2]
+
 '''
