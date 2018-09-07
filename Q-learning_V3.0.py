@@ -1,6 +1,8 @@
 # Implementation  of Q-learning
 # again for 3x3 matrix is the starting point
-# version 2.1 is to combine Q-learning  with hardware
+# version 3.0 is to include exploitation and exploration concept
+# function to decide percentage of non-random actions is (100-(100/exp(0.1*(x-1))))
+#
 import numpy as np
 # import ipdb
 import time
@@ -9,13 +11,13 @@ import random
 from Dummy import generateDummy
 from copy import deepcopy
 import pinSetup
-import update_reward
+# import update_reward
 import GoToHome
-import action_21 as act
+import action_20
 import generate_rewardmatrix
 import gotopos
 import initvalact
-gama = 0.5  # discount factor assuming to be 0.9
+gama = 0.9  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
 
@@ -60,10 +62,8 @@ GoToHome.GoToHome(p, p1)
 
 
 def qLearning(n, p, p1, encoder, ENClast):
-    import qinitial
     v = initvalact.initvalact(n)
-    Q = qinitial.qinitial(n)
-    #Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]] 
+    Q = v[0]
     a = v[1]
     # a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
     # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
@@ -72,7 +72,7 @@ def qLearning(n, p, p1, encoder, ENClast):
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
-    while qError(Q, Qlast) > 1.5 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
+    while qError(Q, Qlast) > 10**-3 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
         # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
         # and this will cause us to fall out of the loop
         iteration += 1  # incresing iteration value
@@ -99,31 +99,42 @@ def qLearning(n, p, p1, encoder, ENClast):
         else:
             pass
         gotopos.gotopos(raw, col, p, p1, n)  # to go to state that is selected randomly
-        time.sleep(0.3)
-	# ipdb.set_trace()
+        # ipdb.set_trace()
+        NumOfSelAct = 100*(1-1/(exp(0.1(iteration-1))))
+        NumOfSelAct = 20*NumOfSelAct/100
+        distance = 19/(NumOfSelAct-1)
+        temp = 1
+        list = []
+        while temp <= 20:
+            list.append(temp)
+            temp += distance
+            temp = round(temp)
         for i in range(0, 20):
             # action selection according to selction of state
-            if raw == 0 and col == 0:
-                action = random.choice([1, 3])
-            elif raw == 0 and (col == -1 or col == size[1]-1):
-                action = random.choice([1, 2])
-            elif raw == 0:
-                action = random.choice([1, 2, 3])
-
-            elif raw == size[0]-1 and col == 0:
-                action = random.choice([0, 3])
-            elif raw == size[0]-1 and (col == -1 or col == size[1]-1):
-                action = random.choice([0, 2])
-            elif raw == size[0]-1:
-                action = random.choice([0, 2, 3])
-
-            elif col == 0:
-                action = random.choice([0, 1, 3])
-            elif (col == -1 or col == size[1]-1):
-                action = random.choice([0, 1, 2])
-
+            if i in list:
+                action = Q[raw][col].index(max(Q[raw][col]))
             else:
-                action = random.randint(0, 3)  # cells where all four actions are possible
+                if raw == 0 and col == 0:
+                    action = random.choice([1, 3])
+                elif raw == 0 and (col == -1 or col == size[1]-1):
+                    action = random.choice([1, 2])
+                elif raw == 0:
+                    action = random.choice([1, 2, 3])
+
+                elif raw == size[0]-1 and col == 0:
+                    action = random.choice([0, 3])
+                elif raw == size[0]-1 and (col == -1 or col == size[1]-1):
+                    action = random.choice([0, 2])
+                elif raw == size[0]-1:
+                    action = random.choice([0, 2, 3])
+
+                elif col == 0:
+                    action = random.choice([0, 1, 3])
+                elif (col == -1 or col == size[1]-1):
+                    action = random.choice([0, 1, 2])
+
+                else:
+                    action = random.randint(0, 3)  # cells where all four actions are possible
 
             # defining nextstate according to choosen action
             if action == 0:  # Up movement
@@ -151,7 +162,7 @@ def qLearning(n, p, p1, encoder, ENClast):
             UPDATE_REWARD FUNCTION
             '''
             ENClast = encoder.getData()
-            act.playAction(action, raw, col, size[0], p, p1)
+            action_20.playAction(action, raw, col, size[0], p, p1)
             time.sleep(0.1)
             if action == 0 or action == 1:
                 ENClast = encoder.getData()
@@ -161,14 +172,12 @@ def qLearning(n, p, p1, encoder, ENClast):
 
             try:
                 Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))
-		#print "Q", Q 
             # tracking if there is a type error (i.e. datatype missmatch) or not in above equation
             except TypeError as e:
                 print("TypeError")
             raw = rawtemp
             col = coltemp
-        print "qerror is", qError(Q,Qlast)
-        print "reward is", reward
+
     # getting the appropriate action back from the given calculated values of Q matrix
     for r in range(0, size[0]):
         for c in range(0, size[1]):
@@ -180,7 +189,7 @@ def qLearning(n, p, p1, encoder, ENClast):
 
 
 # trial run of the function
-trial = qLearning(3, p, p1, encoder, ENClast)
+trial = qLearning(Q, p, p1, encoder, ENClast)
 print(trial[0])
 print("\n")
 print(trial[1])

@@ -19,11 +19,11 @@ for x in range(0, 200):
     p1.ChangeDutyCycle(y)
     time.sleep(0.05)
 '''
-gotopos.gotopos(2,1,p,p1, 3)
+gotopos.gotopos(2,0,p,p1, 3)
 time.sleep(0.3)
 ENClast = encoder.getData()
 time.sleep(0.0)
-act.playAction(2,2,1,3,p,p1)
+act.playAction(3,2,0,3,p,p1)
 time.sleep(0.5)
 ENC = encoder.getData()
 print (ENC - ENClast)

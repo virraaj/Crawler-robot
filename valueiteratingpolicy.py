@@ -1,7 +1,7 @@
 def valueiteratingpolicy(n):
     import ValueIteration
     import pinSetup
-    import action_20
+    import action_21 as action_20
     import gotopos
     import initvalact
     import time
@@ -17,6 +17,7 @@ def valueiteratingpolicy(n):
     value = v[0]
     action = v[1]
     reward = rewardsegregation.rewardsegregation(n, p, p1, encoder, ENClast)
+    print reward
     test = ValueIteration.valueiteration(value, reward, action)
     policy = test[1]
     print policy
