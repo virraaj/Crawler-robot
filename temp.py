@@ -7,10 +7,12 @@ p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
 ENClast = pinVar[3]
-p.start(10.0)
+p.start(4.0)
 p1.start(10.0)
 #time.sleep(0.1)
-'''
+#while True:
+#    p1.ChangeDutyCycle(10.0)
+
 for x in range(0, 200):
     # y = mx+c
     c = 3.0
@@ -27,7 +29,7 @@ act.playAction(3,2,0,3,p,p1)
 time.sleep(0.5)
 ENC = encoder.getData()
 print (ENC - ENClast)
-'''
+
 while True:
     action_21.playAction(3,3,1,5,p,p1)
     time.sleep(0.1)
