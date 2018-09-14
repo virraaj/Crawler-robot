@@ -48,7 +48,7 @@ def rev(t):
 =======
     #p.ChangeDutyCycle(5.0)
     #time.sleep(t)
-    motor2(t)
+    motor2(t) 
 >>>>>>> 70701c3e05a4aa811dcb80be39662b466b682b07
 
 try:

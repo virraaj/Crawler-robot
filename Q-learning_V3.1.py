@@ -1,8 +1,6 @@
 # Implementation  of Q-learning
 # again for 3x3 matrix is the starting point
-# version 3.0 is to include exploitation and exploration concept
-# function to decide percentage of non-random actions is (100-(100/exp(0.1*(x-1))))
-#
+# version 3.1 is to use exploration and exploitation technique with Q-learning
 import numpy as np
 # import ipdb
 import time
@@ -11,36 +9,17 @@ import random
 from Dummy import generateDummy
 from copy import deepcopy
 import pinSetup
-# import update_reward
 import GoToHome
-import action_20
+import action_21 as act
 import generate_rewardmatrix
 import gotopos
 import initvalact
-gama = 0.9  # discount factor assuming to be 0.9
+gama = 0.6  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
-
-'''
-reward = [[{0: None, 1: 0, 2: None, 3: 0},  # state = 1
-           {0: None, 1: 0, 2: 0, 3: 0},  # State = 2
-           {0: None, 1: 0, 2: 0, 3: None}],  # State = 3
-          [{0: 0, 1: 0, 2: None, 3: 0},  # State = 4
-           {0: 0, 1: 0, 2: 0, 3: 0},  # State = 5
-           {0: 0, 1: 0, 2: 0, 3: None}],  # State = 6
-          [{0: 0, 1: None, 2: None, 3: -1},  # State = 7
-           {0: 0, 1: None, 2: 1, 3: -1},  # State = 8
-           {0: 0, 1: None, 2: 1, 3: None}]]  # State = 9
-
-
 # Here Q function is also function of state and actions
 # Q is definded as matrix of 9 members.. every member is a state..
 # containing Q values for all four possible actions
-
-Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State1,State2, Stete3
-     [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],  # State4, State5, State6
-     [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]  # State7, State8, State9
-'''
 # Every time we do down action from a state we will be in new state which is 3
 # member after it. (i.e. from state1 to state4) [This is valid only for 3x3]
 # Every time we do up action from a state we will be in new state which is 3
@@ -61,9 +40,36 @@ GoToHome.GoToHome(p, p1)
 # motorStep2 = 3.0
 
 
+def action_select(raw, col, n):
+    # action selection according to selction of state
+    if raw == 0 and col == 0:
+        return [1, 3]
+    elif raw == 0 and (col == -1 or col == n-1):
+        return [1, 2]
+    elif raw == 0:
+        return [1, 2, 3]
+
+    elif raw == n-1 and col == 0:
+        return [0, 3]
+    elif raw == n-1 and (col == -1 or col == n-1):
+        return [0, 2]
+    elif raw == n-1:
+        return [0, 2, 3]
+
+    elif col == 0:
+        return [0, 1, 3]
+    elif (col == -1 or col == n-1):
+        return [0, 1, 2]
+
+    else:
+        return [0, 1, 2, 3]  # cells where all four actions are possible
+
+
 def qLearning(n, p, p1, encoder, ENClast):
+    import qinitial
     v = initvalact.initvalact(n)
-    Q = v[0]
+    Q = qinitial.qinitial(n)
+    # Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
     a = v[1]
     # a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
     # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
@@ -72,7 +78,8 @@ def qLearning(n, p, p1, encoder, ENClast):
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
-    while qError(Q, Qlast) > 10**-3 or Q == Qlast:  # check for the error value to be 10**-3 or Q = Qlast
+    # check for the error value to be 10**-3 or Q = Qlast
+    while qError(Q, Qlast) > 1.5 or Q == Qlast or iteration <= 8:
         # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
         # and this will cause us to fall out of the loop
         iteration += 1  # incresing iteration value
@@ -99,42 +106,22 @@ def qLearning(n, p, p1, encoder, ENClast):
         else:
             pass
         gotopos.gotopos(raw, col, p, p1, n)  # to go to state that is selected randomly
+        time.sleep(0.3)
         # ipdb.set_trace()
-        NumOfSelAct = 100*(1-1/(exp(0.1(iteration-1))))
-        NumOfSelAct = 20*NumOfSelAct/100
-        distance = 19/(NumOfSelAct-1)
-        temp = 1
-        list = []
-        while temp <= 20:
-            list.append(temp)
-            temp += distance
-            temp = round(temp)
+        NumOfSelAct = 100*(1-1/(np.exp(0.05*(iteration-1))))
+        NumOfSelAct = round(NumOfSelAct)
+
         for i in range(0, 20):
             # action selection according to selction of state
-            if i in list:
-                action = Q[raw][col].index(max(Q[raw][col]))
+            if i < NumOfSelAct:
+                possibleActions = action_select(raw, col, n)
+                tempList = []
+                for i in possibleActions:
+                    tempList.append(Q[raw][col][i])
+                action = possibleActions[tempList.index(max(tempList))]
             else:
-                if raw == 0 and col == 0:
-                    action = random.choice([1, 3])
-                elif raw == 0 and (col == -1 or col == size[1]-1):
-                    action = random.choice([1, 2])
-                elif raw == 0:
-                    action = random.choice([1, 2, 3])
-
-                elif raw == size[0]-1 and col == 0:
-                    action = random.choice([0, 3])
-                elif raw == size[0]-1 and (col == -1 or col == size[1]-1):
-                    action = random.choice([0, 2])
-                elif raw == size[0]-1:
-                    action = random.choice([0, 2, 3])
-
-                elif col == 0:
-                    action = random.choice([0, 1, 3])
-                elif (col == -1 or col == size[1]-1):
-                    action = random.choice([0, 1, 2])
-
-                else:
-                    action = random.randint(0, 3)  # cells where all four actions are possible
+                possibleActions = action_select(raw, col, n)
+                action = random.choice(possibleActions)
 
             # defining nextstate according to choosen action
             if action == 0:  # Up movement
@@ -162,7 +149,7 @@ def qLearning(n, p, p1, encoder, ENClast):
             UPDATE_REWARD FUNCTION
             '''
             ENClast = encoder.getData()
-            action_20.playAction(action, raw, col, size[0], p, p1)
+            act.playAction(action, raw, col, size[0], p, p1)
             time.sleep(0.1)
             if action == 0 or action == 1:
                 ENClast = encoder.getData()
@@ -172,24 +159,30 @@ def qLearning(n, p, p1, encoder, ENClast):
 
             try:
                 Q[raw][col][action] = reward[raw][col][action] + gama * (max(nextstate))
+                # print "Q", Q
             # tracking if there is a type error (i.e. datatype missmatch) or not in above equation
             except TypeError as e:
                 print("TypeError")
             raw = rawtemp
             col = coltemp
-
+        print "qerror is", qError(Q, Qlast)
+        print "reward is", reward
     # getting the appropriate action back from the given calculated values of Q matrix
     for r in range(0, size[0]):
         for c in range(0, size[1]):
             # ipdb.set_trace()
-            a[r][c] = Q[r][c].index(max(Q[r][c]))
+            possibleActions = action_select(r, c, n)
+            tempList = []
+            for i in possibleActions:
+                tempList.append(Q[r][c][i])
+            a[r][c] = possibleActions[tempList.index(max(tempList))]
     # ipdb.set_trace()
     # function returns Q matrix, action matrix and nos of iteration
     return Q, a, iteration
 
 
 # trial run of the function
-trial = qLearning(Q, p, p1, encoder, ENClast)
+trial = qLearning(4, p, p1, encoder, ENClast)
 print(trial[0])
 print("\n")
 print(trial[1])
