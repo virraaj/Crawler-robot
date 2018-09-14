@@ -43,7 +43,7 @@ def fwd(t):
 def rev(t):
     p.ChangeDutyCycle(5.0)
     time.sleep(t)
-    motor2(0.5) 
+    motor2(0.5)
 
 try:
   while True:
