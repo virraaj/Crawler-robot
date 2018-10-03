@@ -1,7 +1,7 @@
 # let's start with 3x3 matrix for valueiteration
 # always use the rewards as dictionary of up, down, left, right.
 import numpy as np
-import ipdb
+#import ipdb
 from copy import deepcopy
 from Error import error
 from Dummy import generateDummy

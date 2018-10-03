@@ -3,8 +3,9 @@ import GoToHome
 import generate_rewardmatrix
 import pinSetup
 import gotopos
-import action_21 as act
+import action_22temp as act
 import time
+t = 0.1
 # 0 = up / 1 = down / 2 = left / 3= right
 
 
@@ -42,12 +43,14 @@ def rewardsegregation(n, p, p1, encoder, ENClast):
                 time.sleep(0.3)
                 ENClast = encoder.getData()
                 act.playAction(action, raw, col, n, p, p1)
-                time.sleep(0.1)
+                time.sleep(t)
                 if action == 0 or action == 1:
                     ENClast = encoder.getData()
                 ENC = encoder.getData()
                 reward[raw][col][action] = ENC - ENClast
                 time.sleep(0.05)
+	    time.sleep(0.1)
+	time.sleep(0.1)
     return reward
 
 '''

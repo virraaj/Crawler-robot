@@ -32,16 +32,18 @@ def gotopos(raw, col, p, p1, n):
     positions.sort()
 
 #    print 'ud=', positions
-    for j in frange(8.0, 3.0, n):
+    for j in frange(9.0, 3.0, n):
         positions1.append(j)
-    positions1.sort()
+#    positions1.sort()
 
 #    print 'lr=', positions1
 #    print positions[raw]
 #    print positions1[col]
     # p.start(2.5)
     # p1.start(2.5)
+    time.sleep(0.05)
     p.ChangeDutyCycle(positions[raw])
+    time.sleep(0.1)
     p1.ChangeDutyCycle(positions1[col])
     time.sleep(0.1)
     # GPIO.cleanup()
