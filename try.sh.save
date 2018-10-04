@@ -1,14 +1,13 @@
 #!/bin/bash
 # Bash Menu Script Example
-pull_up_down=GPIO.PUD_DOWN
 echo  "21" > /sys/class/gpio/export
 echo "in" > /sys/class/gpio/gpio21/direction
 echo "19" > /sys/class/gpio/export
 echo "in" > /sys/class/gpio/gpio19/direction
 cat /sys/class/gpio/gpio21/value
 cat /sys/class/gpio/gpio19/value
-val=$( cat /sys/class/gpio/gpio21/value)
-val1=$(cat /sys/class/gpio/gpio19/value)
+val = $(cat /sys/class/gpio/gpio21/value)
+val1 = $(cat /sys/class/gpio/gpio19/value)
 #echo val
 #PS3='Please enter your choice: '
 #options=("Qlearning 1" "ValueIteration 2" "Quit")
@@ -28,20 +27,15 @@ val1=$(cat /sys/class/gpio/gpio19/value)
 #        *) echo "invalid option $REPLY";;
 #    esac
 #done
-a=1
-echo "value of\"a\"is $a"
-echo "val is $val"
-
-if [ $val == $a ]
+if val == 1
 then
-  echo "Qlearning"
-  python /home/pi/Crawler-robot/Q-learning_V3.1.py
+  echo "Q-learning"
+  python Q-learning_V3.1.py
 else
-  echo "value iteration"
-  python /home/pi/Crawler-robot/valueiteratingpolicy.py
+  echo "value 
+  python valueiteratingpolicy.py
 fi
-if [ $val1 == $a ]
-then
-  echo "shutdown" 
+if val1 == 1
+then 
   shutdown now
 fi

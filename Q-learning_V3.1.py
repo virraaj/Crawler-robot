@@ -15,6 +15,7 @@ import generate_rewardmatrix
 import gotopos
 import initvalact
 import qinitial
+#from pinSetup import val1
 gama = 0.7  # discount factor assuming to be 0.9
 # reward vector is as below
 # 0 = up / 1 = down / 2 = left / 3= right
@@ -33,6 +34,9 @@ p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
 ENClast = pinVar[3]
+#global val1 
+#val1 = pinSetup.valueRead()
+#print "Valueps", val1
 p.start(3.0)
 p1.start(3.0)
 GoToHome.GoToHome(p, p1)
@@ -82,7 +86,9 @@ def qLearning(n, p, p1, encoder, ENClast):
     iteration = 0  # initializing the iteration
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
     # check for the error value to be 10**-3 or Q = Qlast
-    while qError(Q, Qlast) > 1.5 or Q == Qlast or iteration <= 4*n:
+    global val1
+    val1 = pinSetup.valueRead()
+    while (qError(Q, Qlast) > 1.5 or Q == Qlast or iteration <= 4*n) and (val1 == 0):
         # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
         # and this will cause us to fall out of the loop
         iteration += 1  # incresing iteration value
@@ -199,7 +205,12 @@ def qLearning(n, p, p1, encoder, ENClast):
 	print "iteration is", iteration
         print "qerror is", qError(Q, Qlast)
         print "reward is", reward
+	val1 = pinSetup.valueRead()
     # getting the appropriate action back from the given calculated values of Q matrix
+    if val1 == 1:
+        #import os
+        print "Stop"
+        #os.system("shutdown now")
     for r in range(0, size[0]):
         for c in range(0, size[1]):
             # ipdb.set_trace()
