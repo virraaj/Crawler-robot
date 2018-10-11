@@ -222,7 +222,7 @@ def qLearning(n, p, p1, encoder, ENClast):
     # ipdb.set_trace()
     # function returns Q matrix, action matrix and nos of iteration
     print kMatrix
-    print NumOfSelAct
+#    print NumOfSelAct
     return Q, a, iteration
 
 

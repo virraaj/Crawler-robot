@@ -41,7 +41,7 @@ def pinSetup():
     # return
     return [p, p1, encoder, ENClast]
 def valueRead():
-    GPIO.setup(19, GPIO.IN)
-    val1 = GPIO.input(19)
+    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    val1 = GPIO.input(5)
     print "val1=", val1
     return val1
