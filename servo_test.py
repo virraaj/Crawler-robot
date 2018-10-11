@@ -96,7 +96,7 @@ ENClast = 0
 #try:
  # while True:
     #rev(0.5)
-<<<<<<< HEAD
+
   #  fwd(0.25)
     
 
@@ -104,11 +104,10 @@ ENClast = 0
  # p.stop()
  # p1.stop()
 GPIO.cleanup()
-=======
-    fwd(0.5)
+fwd(0.5)
 
 except KeyboardInterrupt:
   p.stop()
   p1.stop()
   GPIO.cleanup()
->>>>>>> 9a9bf1e605a8626da96edcb1f9c1db353dc427bd
+

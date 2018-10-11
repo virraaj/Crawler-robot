@@ -1,6 +1,6 @@
+import RPi.GPIO as GPIO
 def pinSetup():
     # motor setup
-    import RPi.GPIO as GPIO
     servoPIN = 17
     servoPIN1 = 4
     GPIO.setmode(GPIO.BCM)
@@ -8,6 +8,7 @@ def pinSetup():
     GPIO.setup(servoPIN1, GPIO.OUT)
     p = GPIO.PWM(servoPIN, 50)  # GPIO 17 als PWM mit 50Hz
     p1 = GPIO.PWM(servoPIN1, 50)
+
 
     # encoder setup
     import KY040.ky040.KY040_V2 as ky
@@ -39,3 +40,8 @@ def pinSetup():
 
     # return
     return [p, p1, encoder, ENClast]
+def valueRead():
+    GPIO.setup(19, GPIO.IN)
+    val1 = GPIO.input(19)
+    print "val1=", val1
+    return val1
