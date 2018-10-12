@@ -22,8 +22,9 @@ def playAction(action, raw, col, n, p, p1):
     and n = Nos. of steps we want
 *****************************************************************************
     '''
+    tDelay = 0.0065
     positions = []  # positions of motor 1
-    for i in frange(2.5, 5.5, n):
+    for i in frange(3.0, 6.0, n):
         positions.append(i)
 
     motor1_range = positions   # down to up
@@ -44,7 +45,7 @@ def playAction(action, raw, col, n, p, p1):
         for x in range(0, 25):
             d = m*x+c
             p.ChangeDutyCycle(d)
-            time.sleep(0.025)
+            time.sleep(tDelay)
     elif action == 0 and raw <= 0:
         print"UP motion not allowed"
     elif action == 1 and raw < n-1:  # down
@@ -55,7 +56,7 @@ def playAction(action, raw, col, n, p, p1):
         for x in range(0, 25):
             d = m*x+c
             p.ChangeDutyCycle(d)
-            time.sleep(0.025)
+            time.sleep(tDelay)
     elif action == 1 and raw >= n-1:
         print"DOWN motion not allowed"
     elif action == 2 and col > 0:  # Left
@@ -65,7 +66,7 @@ def playAction(action, raw, col, n, p, p1):
         for x in range(0, 25):
             d = m*x+c
             p1.ChangeDutyCycle(d)
-            time.sleep(0.025)
+            time.sleep(tDelay)
     elif action == 2 and col <= 0:
         print"Left motion not allowed"
     elif action == 3 and col < n-1:  # Right
@@ -75,7 +76,7 @@ def playAction(action, raw, col, n, p, p1):
         for x in range(0, 25):
             d = m*x+c
             p1.ChangeDutyCycle(d)
-            time.sleep(0.025)
+            time.sleep(tDelay)
     elif action == 3 and col >= n-1:
         print"Right motion not allowed"
 

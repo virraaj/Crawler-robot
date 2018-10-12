@@ -27,7 +27,7 @@ def gotopos(raw, col, p, p1, n):
     positions1 = []
 
 #    n = 5
-    for i in frange(5.5, 2.5, n):
+    for i in frange(6.0, 3.0, n):
         positions.append(i)
     positions.sort()
 

@@ -3,7 +3,7 @@ import GoToHome
 import generate_rewardmatrix
 import pinSetup
 import gotopos
-import action_22temp as act
+import action_22 as act
 import time
 t = 0.1
 # 0 = up / 1 = down / 2 = left / 3= right

@@ -23,7 +23,7 @@ def playAction(action, raw, col, n, p, p1):
 *****************************************************************************
     '''
     positions = []  # positions of motor 1
-    for i in frange(2.5, 5.5, n):
+    for i in frange(3.0, 6.0, n):
         positions.append(i)
 
     motor1_range = positions   # down to up
