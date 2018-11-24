@@ -40,8 +40,31 @@ def pinSetup():
 
     # return
     return [p, p1, encoder, ENClast]
-def valueRead():
-    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+def valueRead_ON():
+    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # OFF POSITION
     val1 = GPIO.input(5)
-    print "val1=", val1
+#    print "val1=", val1
     return val1
+#    if val1:
+#	return "OFF"
+#    else:
+#	return "ON"
+
+def valueRead_alg():
+    GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)	 # Qlambda learning
+    GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Q learning
+    if  GPIO.input(13):
+	return "Qlambda Learning"
+    elif GPIO.input(19):
+	return "Q Learning"
+    else:
+	return "Value iteration"
+
+def valueRead_dir():
+    GPIO.setup(6, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #Backward
+    if GPIO.input(6):
+	return 2
+    else:
+	return 1
+

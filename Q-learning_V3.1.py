@@ -87,7 +87,7 @@ def qLearning(n, p, p1, encoder, ENClast):
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
     # check for the error value to be 10**-3 or Q = Qlast
     global val1
-    val1 = pinSetup.valueRead()
+    val1 = pinSetup.valueRead_ON()
     while (qError(Q, Qlast) > 1.5 or Q == Qlast or iteration <= 4*n) and (val1 == 0):
         # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
         # and this will cause us to fall out of the loop
@@ -189,7 +189,8 @@ def qLearning(n, p, p1, encoder, ENClast):
                 	ENClast = encoder.getData()
             	    ENC = encoder.getData()
 		    diff = ENC - ENClast
-            reward[raw][col][action] = diff
+	    direction = pinSetup.valueRead_dir()
+            reward[raw][col][action] = ((-1)**direction)*diff
             # update_reward.update_reward(reward, raw, col, action, diff)
             kMatrix[raw][col][action] = kMatrix[raw][col][action] + 1
             try:
@@ -205,7 +206,7 @@ def qLearning(n, p, p1, encoder, ENClast):
 	print "iteration is", iteration
         print "qerror is", qError(Q, Qlast)
         print "reward is", reward
-	val1 = pinSetup.valueRead()
+	val1 = pinSetup.valueRead_ON()
     # getting the appropriate action back from the given calculated values of Q matrix
     if val1 == 1:
         #import os

@@ -60,14 +60,14 @@ class KY040:
         self.CLOCKWISE = value
 
     def getData(self):
-        return self.CLOCKWISE
+        return -self.CLOCKWISE
 
     def _switchCallback(self, pin):
         if None == self.switchPin:
             return
 
         if GPIO.input(self.switchPin) == 0:
-            self.switchCallback()
+            self._switchCallback()
 
 
 '''

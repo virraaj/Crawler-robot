@@ -47,7 +47,9 @@ def rewardsegregation(n, p, p1, encoder, ENClast):
                 if action == 0 or action == 1:
                     ENClast = encoder.getData()
                 ENC = encoder.getData()
-                reward[raw][col][action] = ENC - ENClast
+		direction = pinSetup.valueRead_dir()
+		print ((-1)**direction)*(ENC - ENClast)
+                reward[raw][col][action] = ((-1)**direction)*(ENC - ENClast)
                 time.sleep(0.05)
 	    time.sleep(0.1)
 	time.sleep(0.1)

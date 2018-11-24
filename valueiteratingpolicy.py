@@ -27,7 +27,7 @@ def valueiteratingpolicy(n):
     gotopos.gotopos(raw, col, p, p1, n)
     # 0 = up / 1 = down / 2 = left / 3= right
     global val1
-    val1 = pinSetup.valueRead()
+    val1 = pinSetup.valueRead_ON()
     while True and val1 == 0:
         if action[raw][col] == 0:
             act.playAction(0, raw, col, n, p, p1)
@@ -44,7 +44,7 @@ def valueiteratingpolicy(n):
         elif action[raw][col] == 3:
             act.playAction(3, raw, col, n, p, p1)
             col = col + 1
-        val1 = pinSetup.valueRead()
+        val1 = pinSetup.valueRead_ON()
     if val1 == 1:
         print "Stop"
         #import os
