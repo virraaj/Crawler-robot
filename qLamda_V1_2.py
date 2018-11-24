@@ -19,7 +19,7 @@ lamda = 1/2
 gama = 0.7  # discount factor assuming to be 0.9
 # 0 = up / 1 = down / 2 = left / 3= right
 # Here Q function is also function of state and actions
-
+'''
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
@@ -28,6 +28,7 @@ ENClast = pinVar[3]
 p.start(3.0)
 p1.start(3.0)
 GoToHome.GoToHome(p, p1)
+'''
 
 
 def epsilon_greedy_policy(Q, actions, epsilon):
@@ -87,7 +88,7 @@ def action_select(raw, col, n):
         return [0, 1, 2, 3]  # cells where all four actions are possible
 
 
-def qLearning(n, p, p1, encoder, ENClast):
+def qLamda(n, p, p1, encoder, ENClast):
     v = initvalact.initvalact(n)
     Q = qinitial.qinitial(n)
     kMatrix = qinitial.qinitial(n)
@@ -157,14 +158,14 @@ def qLearning(n, p, p1, encoder, ENClast):
         ACTION_PERFORMANCE FUNCTION
         UPDATE_REWARD FUNCTION
 	'''
-        ENClast= encoder.getData()
+        ENClast = encoder.getData()
         act.playAction(action, raw, col, size[0], p, p1)
         time.sleep(0.1)
         if action == 0 or action == 1:
-            ENClast= encoder.getData()
-        ENC= encoder.getData()
+            ENClast = encoder.getData()
+        ENC = encoder.getData()
         diff = ENC - ENClast
-	oldreward = reward[raw][col][action]
+        oldreward = reward[raw][col][action]
         if (oldreward != 0 and diff == 0) or (np.sign(oldreward) != np.sign(diff) and oldreward != 0):
             print ("!! restriction applied !!")
             gotopos.gotopos(raw, col, p, p1, n)
@@ -176,7 +177,7 @@ def qLearning(n, p, p1, encoder, ENClast):
                 ENClast = encoder.getData()
             ENC = encoder.getData()
             diff = ENC - ENClast
-	direction = pinSetup.valueRead_dir()
+        direction = pinSetup.valueRead_dir()
         reward[raw][col][action] = ((-1)**direction)*diff
         kMatrix[raw][col][action] = kMatrix[raw][col][action] + 1
 
@@ -203,7 +204,7 @@ def qLearning(n, p, p1, encoder, ENClast):
         print "qerror is", qError(Q, Qlast)
         print "reward is", reward
         print "iteration = ", iteration
-	val1 = pinSetup.valueRead_ON()
+        val1 = pinSetup.valueRead_ON()
     # getting the appropriate action back from the given calculated values of Q matrix
     print Tr
     print Q
@@ -219,7 +220,7 @@ def qLearning(n, p, p1, encoder, ENClast):
 
 
 # trial run of the function
-trial = qLearning(3,p,p1,encoder,ENClast)
+trial = qLamda(3, p, p1, encoder, ENClast)
 print(trial[0])
 print("\n")
 print(trial[1])

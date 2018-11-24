@@ -5,6 +5,8 @@ import gotopos
 import initvalact
 import time
 import rewardsegregation_20 as rewardsegregation
+
+'''
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
@@ -13,6 +15,9 @@ ENClast = pinVar[3]
 
 p.start(10.0)
 p1.start(10.0)
+'''
+
+
 def valueiteratingpolicy(n):
     v = initvalact.initvalact(n)
     value = v[0]
@@ -47,6 +52,7 @@ def valueiteratingpolicy(n):
         val1 = pinSetup.valueRead_ON()
     if val1 == 1:
         print "Stop"
+
         #import os
         #os.system("shutdown now")
 valueiteratingpolicy(3)
