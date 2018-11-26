@@ -18,7 +18,7 @@ p1.start(10.0)
 '''
 
 
-def valueiteratingpolicy(n):
+def valueiteratingpolicy(n, p, p1, encoder, ENClast):
     v = initvalact.initvalact(n)
     value = v[0]
     action = v[1]
@@ -55,4 +55,4 @@ def valueiteratingpolicy(n):
 
         #import os
         #os.system("shutdown now")
-valueiteratingpolicy(3)
+#valueiteratingpolicy(3, p, p1, encoder, ENClast)

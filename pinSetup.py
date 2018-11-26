@@ -42,8 +42,8 @@ def pinSetup():
     return [p, p1, encoder, ENClast]
 
 def valueRead_ON():
-    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # OFF POSITION
-    val1 = GPIO.input(5)
+    GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # OFF POSITION
+    val1 = GPIO.input(12)
 #    print "val1=", val1
     return val1
 #    if val1:

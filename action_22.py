@@ -23,7 +23,7 @@ def playAction(action, raw, col, n, p, p1):
 *****************************************************************************
     '''
     tDelay = 0.0065
-    tDelay = 0.01
+    tDelay = 0.015
     positions = []  # positions of motor 1
     for i in frange(3.0, 6.3, n):
         positions.append(i)
@@ -33,7 +33,7 @@ def playAction(action, raw, col, n, p, p1):
 #    print "1st_Motor_Range", motor1_range
 
     positionraw = []  # positions motor2
-    for j in frange(9.0, 3.0, n):
+    for j in frange(8.5, 3.5, n):
         positionraw.append(j)
     motor2_range = positionraw  # towards Right
 #    print "2nd_Mtor_Range=", motor2_range

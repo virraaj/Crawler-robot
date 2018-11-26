@@ -14,12 +14,14 @@ GoToHome.GoToHome(p, p1)
 
 val1 = pinSetup.valueRead_ON()
 val2 = pinSetup.valueRead_alg()
-
+print (val1, val2)
 while True:
     if val1 == 0:
         if val2 == "Value iteration":
-            valueiteratingpolicy.valueiteratingpolicy(3)
+	    print "Value Iteration"
+            valueiteratingpolicy.valueiteratingpolicy(3, p, p1, encoder, ENClast)
         elif val2 == "Q Learning":
+	    print "QLearning"
             trial = qLearning.qLearning(3, p, p1, encoder, ENClast)
             print(trial[0])
             print("\n")
@@ -27,6 +29,7 @@ while True:
             print("\n")
             print(trial[2])
         else:  # qLamda learning
+	    print "qLamda"
             trial = qLamda.qLamda(3, p, p1, encoder, ENClast)
             print(trial[0])
             print("\n")
@@ -35,3 +38,7 @@ while True:
             print(trial[2])
     else:
         print "stopped"
+    val1 = pinSetup.valueRead_ON()
+    val2 = pinSetup.valueRead_alg()
+
+

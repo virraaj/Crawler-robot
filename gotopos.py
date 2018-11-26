@@ -32,7 +32,7 @@ def gotopos(raw, col, p, p1, n):
     positions.sort()
 
 #    print 'ud=', positions
-    for j in frange(9.0, 3.0, n):
+    for j in frange(8.5, 3.5, n):
         positions1.append(j)
 #    positions1.sort()
 

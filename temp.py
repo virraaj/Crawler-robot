@@ -7,8 +7,8 @@ p = pinVar[0]
 p1 = pinVar[1]
 encoder = pinVar[2]
 ENClast = pinVar[3]
-#p.start(4.0)
-#p1.start(10.0)
+p.start(4.0)
+p1.start(10.0)
 #time.sleep(0.1)
 while True:
     '''
@@ -20,9 +20,10 @@ while True:
     time.sleep(1.0)
     el = encoder.getData()
     print el
-    '''
     print pinSetup.valueRead_alg()
-#    print pinSetup.valueRead_ON()
-#    print pinSetup.valueRead_dir()
+    print pinSetup.valueRead_ON()
+    print pinSetup.valueRead_dir()
     print "\n"
     time.sleep(1.0)
+    '''
+    gotopos.gotopos(2,0,p,p1,3)

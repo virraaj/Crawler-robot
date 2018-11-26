@@ -10,7 +10,7 @@ from Dummy import generateDummy
 from copy import deepcopy
 import pinSetup
 import GoToHome
-import action_21 as act
+import action_22 as act
 import generate_rewardmatrix
 import gotopos
 import initvalact
@@ -29,6 +29,7 @@ gama = 0.7  # discount factor assuming to be 0.9
 # Every Right action will take us to state which is 1 member after it. [not valid for state3, state6, state9]
 # Every Left action will take us to state which is 1 member before it. [not valid for state1, state4, state7]
 
+'''
 pinVar = pinSetup.pinSetup()
 p = pinVar[0]
 p1 = pinVar[1]
@@ -40,7 +41,7 @@ ENClast = pinVar[3]
 p.start(3.0)
 p1.start(3.0)
 GoToHome.GoToHome(p, p1)
-
+'''
 # motorStep1 = 3.0
 # motorStep2 = 3.0
 
@@ -174,8 +175,10 @@ def qLearning(n, p, p1, encoder, ENClast):
 		    diff = -2
 	    else:
 		diff = 0
+	    direction = pinSetup.valueRead_dir()
+	    diff_temp = ((-1)**direction)*diff
 	    oldreward = reward[raw][col][action]
-	    if (oldreward != 0 and diff == 0) or (np.sign(oldreward)!=np.sign(diff)):
+	    if (oldreward != 0 and diff_temp == 0) or (np.sign(oldreward)!=np.sign(diff_temp) and oldreward != 0):
 #		restriCount[raw][col][action] += 1
 #		if restriCount[raw][col][action] < 3:
     		    print ("!! restriction applied !!")
@@ -189,7 +192,7 @@ def qLearning(n, p, p1, encoder, ENClast):
                 	ENClast = encoder.getData()
             	    ENC = encoder.getData()
 		    diff = ENC - ENClast
-	    direction = pinSetup.valueRead_dir()
+	    
             reward[raw][col][action] = ((-1)**direction)*diff
             # update_reward.update_reward(reward, raw, col, action, diff)
             kMatrix[raw][col][action] = kMatrix[raw][col][action] + 1
@@ -228,9 +231,11 @@ def qLearning(n, p, p1, encoder, ENClast):
 
 
 # trial run of the function
+'''
 trial = qLearning(3, p, p1, encoder, ENClast)
 print(trial[0])
 print("\n")
 print(trial[1])
 print("\n")
 print(trial[2])
+'''
