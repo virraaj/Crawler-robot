@@ -179,6 +179,8 @@ def qLamda(n, p, p1, encoder, ENClast):
         ENC = encoder.getData()
 	if direction != pinSetup.valueRead_dir():
 	    iteration = 2
+	    kMatrix = qinitial.qinitial(n)
+    	    Tr = qinitial.qinitial(n)
 
 	print direction
 	print pinSetup.valueRead_dir()
