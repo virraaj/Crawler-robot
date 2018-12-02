@@ -1,13 +1,24 @@
-#import ipdb
-import GoToHome
+'''
+____________________________________________________________________________
+*** rewardsegregation() takes State matrix size and collects all rewards by
+performing all actions possible in each states. ***
+* action_select() takes current position (state) as raw and col number and
+returns all possible actions in that perticular position. *
+--> 0 = up ; 1 = down ; 2 = left ; 3= right
+______________________________________________________________________________
+'''
+
+# ___________ impoering dependencies ___________ #
+
 import generate_rewardmatrix
 import pinSetup
 import gotopos
 import action_22 as act
 import time
 t = 0.1
-# 0 = up / 1 = down / 2 = left / 3= right
 
+
+# ___________ method definition ___________ #
 
 def action_select(raw, col, n):
     # action selection according to selction of state
@@ -34,47 +45,34 @@ def action_select(raw, col, n):
         return [0, 1, 2, 3]  # cells where all four actions are possible
 
 
+# ___________ method definition ___________ #
+
 def rewardsegregation(n, p, p1, encoder, ENClast):
+    '''
+    first of all generate_rewardmatrix generates an empty reward matrix
+    depending on the size of state space (Nos of cols and raws)
+    '''
     reward = generate_rewardmatrix.generate_rewardmatrix(n)
+    global val1
+    val1 = pinSetup.valueRead_ON()  # read ON/OFF switch
     for raw in range(0, n):
         for col in range(0, n):
             for action in action_select(raw, col, n):
-                gotopos.gotopos(raw, col, p, p1, n)
-                time.sleep(0.3)
-                ENClast = encoder.getData()
-                act.playAction(action, raw, col, n, p, p1)
-                time.sleep(t)
-                if action == 0 or action == 1:
-                    ENClast = encoder.getData()
-                ENC = encoder.getData()
-		direction = pinSetup.valueRead_dir()
-		print ((-1)**direction)*(ENC - ENClast)
-                reward[raw][col][action] = ((-1)**direction)*(ENC - ENClast)
-                time.sleep(0.05)
-	    time.sleep(0.1)
-	time.sleep(0.1)
+                if val1 == 0:
+                    gotopos.gotopos(raw, col, p, p1, n)
+                    time.sleep(0.3)
+                    ENClast = encoder.getData()  # encoder reading before action
+                    act.playAction(action, raw, col, n, p, p1)  # perform action
+                    time.sleep(t)
+                    if action == 0 or action == 1:
+                        ENClast = encoder.getData()
+                    ENC = encoder.getData()  # encoder reading after action
+                    direction = pinSetup.valueRead_dir()  # checking for direction switch
+                    print ((-1)**direction)*(ENC - ENClast)
+                    # updating reward depending on encoder reading before and after action
+                    reward[raw][col][action] = ((-1)**direction)*(ENC - ENClast)
+                    time.sleep(0.05)
+                    val1 = pinSetup.valueRead_ON()  # updating state of switch
+            time.sleep(0.1)
+        time.sleep(0.1)
     return reward
-
-'''
-pinVar = pinSetup.pinSetup()
-p = pinVar[0]
-p1 = pinVar[1]
-encoder = pinVar[2]
-ENClast = pinVar[3]
-p.start(4.0)
-p1.start(6.5)
-encoder.setData(0)
-#GoToHome.GoToHome(p, p1)
-#time.sleep(0.25)
-#gotopos.gotopos(0,0,p,p1)
-#gotopos.gotopos(1,0,p,p1)
-#gotopos.gotopos(2,0,p,p1)
-#time.sleep(0.25)
-#action_20.playAction(0,1,0,3,p,p1)
-#time.sleep(0.25)
-reward = rewardsegregation(4, p, p1, encoder, ENClast)
-print reward
-#print reward[1]
-#print reward[2]
-
-'''

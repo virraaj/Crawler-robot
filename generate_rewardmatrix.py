@@ -1,5 +1,17 @@
+'''
+____________________________________________________________________________
+* generate_rewardmatri() generates an empty reward matrix depending on the size
+of state space (Nos of cols and raws)
+it takes size total nos of raw or col as an input. *
+______________________________________________________________________________
+'''
+
+# ___________ impoering dependencies ___________ #
+
 from copy import deepcopy
 
+
+# ___________ method definition ___________ #
 
 def generate_rewardmatrix(n):
     temp = []
@@ -48,6 +60,3 @@ def generate_rewardmatrix(n):
                     reward[raw][col][2] = 0  # left motion
                     reward[raw][col][3] = 0  # right mption
     return reward
-
-
-

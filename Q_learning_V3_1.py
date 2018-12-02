@@ -1,50 +1,61 @@
-# Implementation  of Q-learning
-# again for 3x3 matrix is the starting point
-# version 3.1 is to use exploration and exploitation technique with Q-learning
+'''
+____________________________________________________________________________
+*** Q-learning implements conventional Q-learning method and algorithm. ***
+* action_select() takes current position (state) as raw and col number and
+returns all possible actions in that perticular position. *
+* generateDummy() generating Dummy value vector with norm = 1 to apply condition
+error between Qlast and Q*
+* qError() returns sum of squared error between given two lists*
+* playAction() method plays the given action by moving appropriate arms
+(i.e up, down, left or right) in the given state. *
+* pinSetup() is a method that single handedly defines all the required input and
+output pins of the RaspberryPi Zero board. *
+--> version 3.1 is to use exploration and exploitation technique with Q-learning.
+--> in V3.1 restriction for reward controlling is applied successfully
+--> for actions consider following notation:
+        0 = up ; 1 = down ; 2 = left ; 3= right
+
+______________________________________________________________________________
+'''
+
+
+# ___________ impoering dependencies ___________ #
+
 import numpy as np
-#import ipdb
 import time
 from Error import qError
 import random
 from Dummy import generateDummy
 from copy import deepcopy
 import pinSetup
-import GoToHome
 import action_22 as act
 import generate_rewardmatrix
 import gotopos
 import initvalact
 import qinitial
-#from pinSetup import val1
+
+
+# ___________ learning parameters ___________ #
+
 gama = 0.7  # discount factor assuming to be 0.9
-# reward vector is as below
-# 0 = up / 1 = down / 2 = left / 3= right
-# Here Q function is also function of state and actions
-# Q is definded as matrix of 9 members.. every member is a state..
-# containing Q values for all four possible actions
-# Every time we do down action from a state we will be in new state which is 3
-# member after it. (i.e. from state1 to state4) [This is valid only for 3x3]
-# Every time we do up action from a state we will be in new state which is 3
-# member before it. (i.e. from state4 to state1) [This is valid only for 3x3]
-# Every Right action will take us to state which is 1 member after it. [not valid for state3, state6, state9]
-# Every Left action will take us to state which is 1 member before it. [not valid for state1, state4, state7]
+bita = 1/2  # bita definition
 
 '''
-pinVar = pinSetup.pinSetup()
-p = pinVar[0]
-p1 = pinVar[1]
-encoder = pinVar[2]
-ENClast = pinVar[3]
-#global val1 
-#val1 = pinSetup.valueRead()
-#print "Valueps", val1
-p.start(3.0)
-p1.start(3.0)
-GoToHome.GoToHome(p, p1)
+********************************************************************************
+Here Q function is also function of state and actions
+Q is definded as matrix of 9 members.. every member is a state..
+containing Q values for all four possible actions
+Every time we do down action from a state we will be in new state which is 3
+member after it. (i.e. from state1 to state4) [This is valid only for 3x3]
+Every time we do up action from a state we will be in new state which is 3
+member before it. (i.e. from state4 to state1) [This is valid only for 3x3]
+Every Right action will take us to state which is 1 member after it. [not valid for state3, state6, state9]
+Every Left action will take us to state which is 1 member before it. [not valid for state1, state4, state7]
+********************************************************************************
 '''
-# motorStep1 = 3.0
-# motorStep2 = 3.0
 
+
+# ___________ method definition ___________ #
 
 def action_select(raw, col, n):
     # action selection according to selction of state
@@ -71,150 +82,210 @@ def action_select(raw, col, n):
         return [0, 1, 2, 3]  # cells where all four actions are possible
 
 
+# ___________ method definition ___________ #
+
 def qLearning(n, p, p1, encoder, ENClast):
-    v = initvalact.initvalact(n)
-    Q = qinitial.qinitial(n)
+    v = initvalact.initvalact(n)  # initialization for action matrix
+    Q = qinitial.qinitial(n)  # initialization for Q matrix
+    # kMatrix keeps track of nos of time an state action pair repeats
     kMatrix = qinitial.qinitial(n)
     restriCount = qinitial.qinitial(n)
-    bita = 1/2
-    # Q = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
-    a = v[1]
-    # a = [[None, None, None], [None, None, None],  [None, None, None]]  # initializing action matrix
-    # size = reading size of the given Q matrix [Nos of raws, Nos. of col, Nos. of actions possible per state]
+    a = v[1]  # action matrix assignment
     size = np.shape(Q)  # storing size of Q-matrix
-    n = size[0]
+    n = size[0]  # Nos of raws in Q matrix
     Qlast = generateDummy(Q)  # generating dummy of same sizq as Q to enter the while loop
     iteration = 0  # initializing the iteration
-    reward = generate_rewardmatrix.generate_rewardmatrix(n)
-    # check for the error value to be 10**-3 or Q = Qlast
+    reward = generate_rewardmatrix.generate_rewardmatrix(n)  # generating empty reward matrix
     global val1
-    val1 = pinSetup.valueRead_ON()
+    val1 = pinSetup.valueRead_ON()  # position of ON/OFF switch
+    # check for the error value to be 1.5 or Q = Qlast111
     while (qError(Q, Qlast) > 1.5 or Q == Qlast or iteration <= 4*n) and (val1 == 0):
-        # we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
-        # and this will cause us to fall out of the loop
+        '''
+        - we want here Q!=Qlast becauses in starting phase if reward is zero in next step we will read error = 0
+        and this will cause us to fall out of the loop
+        '''
         iteration += 1  # incresing iteration value
         Qlast = deepcopy(Q)  # copying Q to Qlast
+
+        '''
+        *******************************************************************************
+        Start (Selecting random state and converting it into nos raw and col position)
+        *******************************************************************************
+        '''
         # state =  selecting state randomly 1every time depending on the Q size
         state = random.randint(1, size[0] * size[1])
-        # temp = to retrive raw and column from Nos of state generated by random selector
-        # state / Nos.of column will give us information about the raw number...
-        # for 3x4 (raw x column) state 1 to 4 are raw in 1 and state 5 to 8 are raw in 2
-        # for raw1(state 1 to 4)/4 (total columns) will be 0 < temp <= 1
-        # for raw1(state 5 to 8)/4 (total columns) will be 1 < temp <= 2
+
+        '''
+        IN FOLLOWING STEP WE DEFINE RAW NUMBER DEPENDING ON RANDOMLY SELECTED 'state'.
+        -> temp = to retrive raw and column from Nos of state generated by random selector
+        -> state / Nos.of column will give us information about the raw number...
+        -> for 3x4 (raw x column) state 1 to 4 are raw in 1 and state 5 to 8 are raw in 2
+        -> for raw1(state 1 to 4)/4 (total columns) will be 0 < temp <= 1
+        -> for raw1(state 5 to 8)/4 (total columns) will be 1 < temp <= 2
+        '''
         temp = state / (size[1] * 1.0)  # defining a temporary variable
         if ((temp).is_integer()):
             raw = int(temp) - 1
         else:
             raw = int(temp)
-        # temp = modulo of state and Total column
-        # for column1(state 1,5,9) % 4 (total columns) will be 1 [i.e colum = 1-1 = 0]
-        # for column1(state 2,6,10) % 4 (total columns) will be 2 [i.e colum = 2-1 = 1]
+        '''
+        IN FOLLOWING STEP WE DEFINE COL NUMBER DEPENDING ON RANDOMLY SELECTED 'state'.
+        -> temp = modulo of state and Total column
+        -> for column1(state 1,5,9) % 4 (total columns) will be 1 [i.e colum = 1-1 = 0]
+        -> for column1(state 2,6,10) % 4 (total columns) will be 2 [i.e colum = 2-1 = 1]
+        '''
         temp = state % size[1]
         col = temp - 1
         if col < 0:
             col = size[1] - 1
         else:
             pass
+        '''
+        ************************************************************************
+        END (Selecting random state and converting it into nos raw and col position)
+        ************************************************************************
+        '''
+
         gotopos.gotopos(raw, col, p, p1, n)  # to go to state that is selected randomly
         time.sleep(0.3)
-        # ipdb.set_trace()
+
+        '''
+        ************************************************************************
+        Nos of deterministic actions in next episod of 20 actions
+        ************************************************************************
+        '''
         NumOfSelAct = 100*(1-1/(np.exp(0.05*(iteration-2))))
         NumOfSelAct = round(NumOfSelAct*25/100)
-
+        val1 = pinSetup.valueRead_ON()  # position of ON/OFF switch
         for i in range(0, 20):
-            # action selection according to selction of state
-            if i < NumOfSelAct:
-                possibleActions = action_select(raw, col, n)
-                tempList = []
-                for j in possibleActions:
-                    tempList.append(Q[raw][col][j])
-                action = possibleActions[tempList.index(max(tempList))]
-		print ("for i") , i, ("selected action is"), action
-            else:
-                possibleActions = action_select(raw, col, n)
-                action = random.choice(possibleActions)
+            if val1 == 0:  # switch is in OFF position
+                # action selection according to selction of state
+                if i < NumOfSelAct:  # deterministic actions according to policy
+                    possibleActions = action_select(raw, col, n)
+                    tempList = []
+                    for j in possibleActions:
+                        tempList.append(Q[raw][col][j])
+                    action = possibleActions[tempList.index(max(tempList))]
+                    print ("for i"), i, ("selected action is"), action
+                else:  # random action selection
+                    possibleActions = action_select(raw, col, n)
+                    action = random.choice(possibleActions)
 
-            # defining nextstate according to choosen action
-            if action == 0:  # Up movement
-                nextstate = Q[raw-1][col]
-                rawtemp = raw - 1  # raw of nextstep
-                coltemp = col  # col of nextstep
-            elif action == 1:  # Down movememt
-                nextstate = Q[raw+1][col]
-                rawtemp = raw + 1  # raw of nextstep
-                coltemp = col  # col of nextstep
-            elif action == 2:  # Left movement
-                nextstate = Q[raw][col-1]
-                rawtemp = raw  # raw of nextstep
-                coltemp = col - 1  # col of nextstep
-            else:  # Right movement
-                # ipdb.set_trace()
-                nextstate = Q[raw][col+1]
-                rawtemp = raw  # raw of nextstep
-                coltemp = col + 1  # col of nextstep
-            # ipdb.set_trace()
-            # try executing the Q-iteration formula with no errors..
-            '''
-            _____ADD HERE____
-            ACTION_PERFORMANCE FUNCTION
-            UPDATE_REWARD FUNCTION
-            '''
-            ENClast = encoder.getData()
-            act.playAction(action, raw, col, size[0], p, p1)
-            time.sleep(0.1)
-            if action == 0 or action == 1:
-                ENClast = encoder.getData()
-            ENC = encoder.getData()
-	    if ENC - ENClast > 0:
-		diff = 1
-		if ENC - ENClast > 1:
-		    diff = 2
-	    elif ENC - ENClast < 0:
-		diff = -1
-		if ENC - ENClast < -1:
-		    diff = -2
-	    else:
-		diff = 0
-	    direction = pinSetup.valueRead_dir()
-	    diff_temp = ((-1)**direction)*diff
-	    oldreward = reward[raw][col][action]
-	    if (oldreward != 0 and diff_temp == 0) or (np.sign(oldreward)!=np.sign(diff_temp) and oldreward != 0):
-#		restriCount[raw][col][action] += 1
-#		if restriCount[raw][col][action] < 3:
-    		    print ("!! restriction applied !!")
-		    restriCount[raw][col][action] = 0
-		    gotopos.gotopos(raw, col, p, p1, n)
-		    time.sleep(0.3)
-		    ENClast = encoder.getData()
-            	    act.playAction(action, raw, col, size[0], p, p1)
+                '''
+                ****************************************************************
+                        defining nextstate according to choosen action
+                ****************************************************************
+                '''
+                if action == 0:  # Up movement
+                    nextstate = Q[raw-1][col]
+                    rawtemp = raw - 1  # raw of nextstep
+                    coltemp = col  # col of nextstep
+                elif action == 1:  # Down movememt
+                    nextstate = Q[raw+1][col]
+                    rawtemp = raw + 1  # raw of nextstep
+                    coltemp = col  # col of nextstep
+                elif action == 2:  # Left movement
+                    nextstate = Q[raw][col-1]
+                    rawtemp = raw  # raw of nextstep
+                    coltemp = col - 1  # col of nextstep
+                else:  # Right movement
+                    # ipdb.set_trace()
+                    nextstate = Q[raw][col+1]
+                    rawtemp = raw  # raw of nextstep
+                    coltemp = col + 1  # col of nextstep
+
+                '''
+                ****************************************************************
+                performing action and collecting rewards and updating Q matrix
+                ****************************************************************
+                '''
+                ENClast = encoder.getData()  # collecting encoder reading before act
+                act.playAction(action, raw, col, size[0], p, p1)  # perform action
+                time.sleep(0.1)
+                if action == 0 or action == 1:
+                    ENClast = encoder.getData()
+                ENC = encoder.getData()  # encoder reading after action
+                # controlling reward values not to become too vague
+                if ENC - ENClast > 0:
+                    diff = 1
+                    if ENC - ENClast > 1:
+                        diff = 2
+                elif ENC - ENClast < 0:
+                    diff = -1
+                    if ENC - ENClast < -1:
+                        diff = -2
+                else:
+                    diff = 0
+                direction = pinSetup.valueRead_dir()  # checking for direction switch
+                # stroring in temporarary variable to control faulty rewards
+                diff_temp = ((-1)**direction)*diff
+                oldreward = reward[raw][col][action]  # old reward value of same state action pair
+
+                '''
+                ****************************************************************
+                checking if the reward is under going big difference or a
+                direcion difference then it applies restriction and perform same
+                action again and collect the  reward for the same action again.
+                This approach has saved alot of faulty computation.
+                (Just double checks before updating reward value)
+                ***************************************************************
+                '''
+                if (oldreward != 0 and diff_temp == 0) or (np.sign(oldreward) != np.sign(diff_temp) and oldreward != 0):
+                    print ("!! restriction applied !!")
+                    restriCount[raw][col][action] = 0
+                    gotopos.gotopos(raw, col, p, p1, n)
+                    time.sleep(0.3)
+                    ENClast = encoder.getData()
+                    act.playAction(action, raw, col, size[0], p, p1)
                     time.sleep(0.1)
-		    if action == 0 or action == 1:
-                	ENClast = encoder.getData()
-            	    ENC = encoder.getData()
-		    diff = ENC - ENClast
-	    
-            reward[raw][col][action] = ((-1)**direction)*diff
-            # update_reward.update_reward(reward, raw, col, action, diff)
-            kMatrix[raw][col][action] = kMatrix[raw][col][action] + 1
-            try:
-		alpha = 1/((kMatrix[raw][col][action])**bita)
-                Q[raw][col][action] = (1-alpha) * Q[raw][col][action] + \
-                    alpha * (reward[raw][col][action] + gama * (max(nextstate)))
-                # print "Q", Q
-            # tracking if there is a type error (i.e. datatype missmatch) or not in above equation
-            except TypeError as e:
-                print("TypeError")
-            raw = rawtemp
-            col = coltemp
-	print "iteration is", iteration
-        print "qerror is", qError(Q, Qlast)
-        print "reward is", reward
-	val1 = pinSetup.valueRead_ON()
-    # getting the appropriate action back from the given calculated values of Q matrix
-    if val1 == 1:
-        #import os
+                    if action == 0 or action == 1:
+                        ENClast = encoder.getData()
+                    ENC = encoder.getData()
+                    diff = ENC - ENClast
+
+                reward[raw][col][action] = ((-1)**direction)*diff
+                kMatrix[raw][col][action] = kMatrix[raw][col][action] + 1  # updating kMatrix values
+
+                '''
+                ****************************************************************
+                updating Q matrix values according to Q-Learning algorithm.
+                ****************************************************************
+                '''
+                try:
+                    alpha = 1/((kMatrix[raw][col][action])**bita)
+                    Q[raw][col][action] = (1-alpha) * Q[raw][col][action] + \
+                        alpha * (reward[raw][col][action] + gama * (max(nextstate)))
+                # tracking if there is a type error (i.e. datatype missmatch) or not in above equation
+                except TypeError as e:
+                    print("TypeError")
+
+                # overwriting current state values by next state
+                raw = rawtemp
+                col = coltemp
+            print "iteration is", iteration
+            print "qerror is", qError(Q, Qlast)
+            print "reward is", reward
+            val1 = pinSetup.valueRead_ON()  # updating switch position
+        '''
+        ***********************************************************************
+                                END OF EPISOD
+        ***********************************************************************
+        '''
+
+    '''
+    ****************************************************************************
+                        END OF WHILE LOOP
+    ****************************************************************************
+    '''
+
+    if val1 == 1:  # switch is at OFF position
         print "Stop"
-        #os.system("shutdown now")
+
+    '''
+    ****************************************************************************
+                        Computing policy from Q values
+    ***************************************************************************
+    '''
     for r in range(0, size[0]):
         for c in range(0, size[1]):
             # ipdb.set_trace()
@@ -225,17 +296,4 @@ def qLearning(n, p, p1, encoder, ENClast):
             a[r][c] = possibleActions[tempList.index(max(tempList))]
     # ipdb.set_trace()
     # function returns Q matrix, action matrix and nos of iteration
-    print kMatrix
-#    print NumOfSelAct
     return Q, a, iteration
-
-
-# trial run of the function
-'''
-trial = qLearning(3, p, p1, encoder, ENClast)
-print(trial[0])
-print("\n")
-print(trial[1])
-print("\n")
-print(trial[2])
-'''

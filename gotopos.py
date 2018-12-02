@@ -1,61 +1,41 @@
-#import RPi.GPIO as GPIO
-import pinSetup
+'''
+____________________________________________________________________________
+*** To bring both arms in required position independt of start postion. ***
+--> required input arguments are
+                raw = target raw index (position of second arm)
+                col = target col index (position of first arm)
+                p, p1 = handles to control servo motors (activated GPIOS)
+                n = total nos of raw or col or states
+______________________________________________________________________________
+'''
+
+# ___________ impoering dependencies ___________ #
 import time
 
 
 def gotopos(raw, col, p, p1, n):
-    '''
-    servoPIN = 17
-    servoPIN1 = 4
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(servoPIN, GPIO.OUT)
-    GPIO.setup(servoPIN1, GPIO.OUT)
-    p = GPIO.PWM(servoPIN, 50) # GPIO 17 als PWM mit 50Hz
-    p1 = GPIO.PWM(servoPIN1, 50)
-    #p.start(2.5)
-    #p1.start(2.5)
-    '''
+
+    # ___________ sub method definition ___________ #
     def frange(start, end, n):
-        # step = round(step,3)
         tmp = start
         step = (end - start) / (n-1)
         for i in range(0, n):
             yield tmp
             tmp += step
-    positions = []
+    # ___________ sub method definition end ___________ #
 
-    positions1 = []
+    positions = []  # list initialization
+    positions1 = []  # list initialization
 
-#    n = 5
-    for i in frange(6.3, 3.0, n):
+    for i in frange(6.3, 3.0, n):  # range of first motor
         positions.append(i)
     positions.sort()
 
-#    print 'ud=', positions
-    for j in frange(8.5, 3.5, n):
+    for j in frange(8.5, 3.5, n):  # range of second motor
         positions1.append(j)
-#    positions1.sort()
 
-#    print 'lr=', positions1
-#    print positions[raw]
-#    print positions1[col]
-    # p.start(2.5)
-    # p1.start(2.5)
     time.sleep(0.05)
-    p.ChangeDutyCycle(positions[raw])
+    p.ChangeDutyCycle(positions[raw])  # setting up first motor position
     time.sleep(0.1)
-    p1.ChangeDutyCycle(positions1[col])
+    p1.ChangeDutyCycle(positions1[col])  # setting up second motor position
     time.sleep(0.1)
-    # GPIO.cleanup()
-
-
-'''
-pinVar = pinSetup.pinSetup()
-p = pinVar[0]
-p1 = pinVar[1]
-encoder = pinVar[2]
-ENClast = pinVar[3]
-p.start(3.0)
-p1.start(3.0)
-gotopos(2,2,p,p1,3)
-'''

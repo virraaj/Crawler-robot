@@ -1,17 +1,21 @@
-from copy import deepcopy
-def qinitial(n):
+'''
+____________________________________________________________________________
+*** It takes nos of raw or col and returns a symatric (raw = col) Q matrix.  ***
+______________________________________________________________________________
+'''
 
-    #value = [[[0]*4]*n for i in range(n)]
-    #action = [[None]*n for i in range(n)]
-    a = [0,0,0,0]
+
+# ___________ impoering dependencies ___________ #
+
+from copy import deepcopy
+
+
+def qinitial(n):
+    a = [0, 0, 0, 0]
     temp = []
     value = []
-    for i in range(1,n+1):
+    for i in range(1, n+1):
         temp.append(deepcopy(a))
-    for j in range(1,n+1):
-	value.append(deepcopy(temp))
+    for j in range(1, n+1):
+        value.append(deepcopy(temp))
     return value
-q = qinitial(3)
-print q
-q[0][0][0] = 11
-print q

@@ -1,6 +1,18 @@
-# generateDummy method generates dummy list of same size with first element 1
+'''
+____________________________________________________________________________
+* generateDummy generating Dummy value vector with norm = 1 to apply condition
+error between vlast and v. *
+* generateDummy method generates dummy list of same size with first element 1. *
+______________________________________________________________________________
+'''
+
+
+# ___________ impoering dependencies ___________ #
+
 import numpy as np
 
+
+# ___________ method definition ___________ #
 
 def generateDummy(v1):
     s = np.shape(v1)
@@ -18,13 +30,3 @@ def generateDummy(v1):
         appendElement = List
 
     return List
-
-
-# Trail vectors and print statements
-# v1 = [[[10, 110, 10, 1110], [10, 110, 10, 1110], [10, 110, 10, 1110]],
-#       [[10, 110, 10, 1110], [10, 110, 10, 1110], [10, 110, 10, 1110]],
-#       [[10, 110, 10, 1110], [10, 110, 10, 1110], [10, 110, 10, 1110]]]
-# v2 = [[0, 0, 0, 0], [0, 0, 0, 0]]
-# print(generateDummy(v2))
-# print ("\n")
-# print(np.shape(v2), np.shape(generateDummy(v2)))
