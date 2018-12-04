@@ -50,7 +50,7 @@ while True:
             print(trial[2])
         else:  # qLamda learning
             print "qLamda"
-            # calling Q(lambda)-Learning algorithm
+            # calling Q(λ)-Learning algorithm
             # here 3 suggests that there are 3 nos of raws and cols i.e 9 states
             trial = qLamda.qLamda(3, p, p1, encoder, ENClast)
             print(trial[0])

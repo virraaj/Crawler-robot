@@ -23,7 +23,7 @@ def error(v1, v2):
         return err
 
 
-# ___________ error function for Q and  Q(λ)-Learning ___________ #
+# ___________ error function for Q and  Q(lambda)-Learning ___________ #
 
 def qError(v1, v2):
     s1 = np.shape(v1)

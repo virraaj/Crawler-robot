@@ -1,6 +1,6 @@
 '''
 ____________________________________________________________________________
-*** Q(λ)-learning implements Peng's Q(λ)-learning method and algorithm. ***
+*** Q(lambda)-learning implements Watkins and Peng's Q(lambda)-learning method and algorithm. ***
 * epsilon_greedy_policy() takes list of actions possible, epsilon value and best
 action and returns list of probablities of selecting a action in next step with
 epsilon greedy policy *
@@ -39,7 +39,7 @@ import qinitial
 
 epsilon = 0.7  # initilization for epsilon greedy policy
 bita = 1/2   # bita definition
-lamda = 1/2  # λ value for q(λ) learning
+lamda = 1/2  # lambda value for q(lambda) learning
 gama = 0.7  # discount factor assuming to be 0.9
 
 
@@ -111,7 +111,7 @@ def qLamda(n, p, p1, encoder, ENClast):
     Q = qinitial.qinitial(n)  # initialization for Q matrix
     # kMatrix keeps track of nos of time an state action pair repeats
     kMatrix = qinitial.qinitial(n)
-    # initialization for TD(λ) performance
+    # initialization for TD(lambda) performance
     Tr = qinitial.qinitial(n)
     a = v[1]  # action matrix assignment
     size = np.shape(Q)  # storing size of Q-matrix
@@ -242,7 +242,7 @@ def qLamda(n, p, p1, encoder, ENClast):
 
         '''
         ****************************************************************
-        updating Q matrix values according to Q(λ)-Learning algorithm.
+        updating Q matrix values according to Q(lambda)-Learning algorithm.
         ****************************************************************
         '''
         try:
