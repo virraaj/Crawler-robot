@@ -296,4 +296,32 @@ def qLearning(n, p, p1, encoder, ENClast):
             a[r][c] = possibleActions[tempList.index(max(tempList))]
     # ipdb.set_trace()
     # function returns Q matrix, action matrix and nos of iteration
-    return Q, a, iteration
+    # return Q, a, iteration
+    policy = a
+    print policy
+    raw = 0  # initializing variable raw
+    col = 0  # initializing variable col
+    gotopos.gotopos(raw, col, p, p1, n)  # bring both arms in home initial position
+    # 0 = up / 1 = down / 2 = left / 3= right
+    global val1
+    val1 = pinSetup.valueRead_ON()  # read ON/OFF switch
+    while True and val1 == 0:  # checks for poition of ON/OFF switch
+        # here we check for policy for current raw col state and performing action plus updating raw and col values accordingly
+        if policy[raw][col] == 0:  # up action
+            act.playAction(0, raw, col, n, p, p1)  # perform action
+            raw = raw - 1
+
+        elif policy[raw][col] == 1:  # down action
+            act.playAction(1, raw, col, n, p, p1)  # perform action
+            raw = raw + 1
+
+        elif policy[raw][col] == 2:  # left action
+            act.playAction(2, raw, col, n, p, p1)  # perform action
+            col = col - 1
+
+        elif policy[raw][col] == 3:  # right action
+            act.playAction(3, raw, col, n, p, p1)  # perform action
+            col = col + 1
+        val1 = pinSetup.valueRead_ON()  # updating ON/OFF switch state
+    if val1 == 1:  # if switch is at OFF position
+        print "Stop"
